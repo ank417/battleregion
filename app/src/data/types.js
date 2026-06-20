@@ -1,19 +1,26 @@
-export const TYPES = [
-  { icon: '🔥', color: '#ff7a3c', name: 'Fire' },
-  { icon: '🌊', color: '#2aa9d9', name: 'Ocean' },
-  { icon: '🍃', color: '#4caf5a', name: 'Plant' },
-  { icon: '☁️', color: '#5f9fe0', name: 'Cloud' },
-  { icon: '⛰️', color: '#c08a4a', name: 'Land' },
-  { icon: '🪐', color: '#9b6cd6', name: 'Space' },
-  { icon: '🌌', color: '#e05fb0', name: 'Galaxy' },
+import { getNode } from './typeTree';
+
+const STARTER_TYPE_IDS = ['fire', 'ocean', 'plant', 'cloud', 'land', 'space', 'galaxy'];
+
+export const TYPES = STARTER_TYPE_IDS.map((id) => getNode(id));
+
+// weak -> strong; index is also used as combat power when type matchup is neutral.
+export const WEAPONS = [
+  { id: 'karate', label: 'Karate', icon: '🥋', price: 0, priceLabel: 'FREE' },
+  { id: 'javelin', label: 'Javelin', icon: '🔱', price: 5, priceLabel: '$5' },
+  { id: 'bow', label: 'Bow', icon: '🏹', price: 200, priceLabel: '$200' },
+  { id: 'rifle', label: 'Rifle', icon: '⚡', price: 2000, priceLabel: '$2,000' },
 ];
 
-export const WEAPONS = [
-  { id: 'rifle', label: 'Rifle', icon: '⚡', price: 2000, priceLabel: '$2,000' },
-  { id: 'bow', label: 'Bow', icon: '🏹', price: 200, priceLabel: '$200' },
-  { id: 'javelin', label: 'Javelin', icon: '🔱', price: 5, priceLabel: '$5' },
-  { id: 'karate', label: 'Karate', icon: '🥋', price: 0, priceLabel: 'FREE' },
-];
+export function weaponTier(weaponId) {
+  return WEAPONS.findIndex((w) => w.id === weaponId);
+}
+
+export function weaponPrice(weaponId) {
+  return WEAPONS.find((w) => w.id === weaponId)?.price ?? 0;
+}
 
 export const TOTAL_SOLDIERS = 42;
 export const BOUNTY_PER_ALIEN = 100;
+export const EXTRA_SOLDIER_COST = 5000;
+export const TYPE_UPGRADE_COST = 1000;

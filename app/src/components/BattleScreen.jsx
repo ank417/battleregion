@@ -5,20 +5,23 @@ import SimpleSoldier from './SimpleSoldier';
 import WeaponPicker from './WeaponPicker';
 import RosterBar from './RosterBar';
 import TypeLegend from './TypeLegend';
+import RoundBanner from './RoundBanner';
+import ToolboxModal from './ToolboxModal';
 import { useBattle } from '../hooks/useBattle';
 import { buildBattlefield } from '../lib/ranks';
 
 const INK = '#1a1a1a';
 
-function Poof({ left, bottom, onDone }) {
+function Effect({ kind, left, bottom, onDone }) {
   useEffect(() => {
     const t = setTimeout(onDone, 900);
     return () => clearTimeout(t);
   }, [onDone]);
+  const isPoof = kind === 'poof';
   return (
     <div style={{ position: 'absolute', left, bottom, transform: 'translateX(-50%)', zIndex: 220, textAlign: 'center', pointerEvents: 'none', animation: 'poof-pop .9s ease-out forwards' }}>
-      <div style={{ fontFamily: "'Bangers', cursive", fontSize: 26, color: '#fff', WebkitTextStroke: '2px #1a1a1a' }}>POOF!</div>
-      <div style={{ fontFamily: "'Bangers', cursive", fontSize: 18, color: '#ffe44d', WebkitTextStroke: '2px #1a1a1a' }}>+$100</div>
+      <div style={{ fontFamily: "'Bangers', cursive", fontSize: 26, color: '#fff', WebkitTextStroke: '2px #1a1a1a' }}>{isPoof ? 'POOF!' : 'OOF!'}</div>
+      {isPoof && <div style={{ fontFamily: "'Bangers', cursive", fontSize: 18, color: '#ffe44d', WebkitTextStroke: '2px #1a1a1a' }}>+$100</div>}
     </div>
   );
 }
@@ -26,20 +29,25 @@ function Poof({ left, bottom, onDone }) {
 export default function BattleScreen() {
   const battle = useBattle();
   const {
-    money, redRoster, blueRoster, redFrontWeapons,
+    money, redRoster, blueRoster,
     redAlive, blueAlive, blueDefeated,
-    selectedIdx, poofs,
-    selectSoldier, closePicker, pickWeapon, clearPoof,
+    selectedIdx, effects,
+    roundNumber, roundResult, toolboxOpen,
+    selectSoldier, closePicker, attack, clearEffect,
+    buyExtraSoldier, upgradeArmyTypes, startNextRound, retryRound,
+    openToolbox, closeToolbox,
   } = battle;
 
-  const redBattlefield = buildBattlefield('red', redRoster, redFrontWeapons);
-  const blueBattlefield = buildBattlefield('blue', blueRoster, redFrontWeapons);
+  const redBattlefield = buildBattlefield('red', redRoster);
+  const blueBattlefield = buildBattlefield('blue', blueRoster);
 
-  const handlePick = (weaponId) => pickWeapon(weaponId, blueBattlefield);
+  const handlePick = (weaponId) => attack(weaponId, blueBattlefield);
+
+  const selectedSoldier = selectedIdx !== null ? redRoster[selectedIdx] : null;
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 36, background: '#1d2a1f', fontFamily: "'Nunito', sans-serif" }}>
-      <div style={{ width: 1000, background: '#fff', borderRadius: 4, boxShadow: '0 18px 50px rgba(0,0,0,.45)', overflow: 'hidden', border: `5px solid ${INK}` }}>
+      <div style={{ width: 1000, background: '#fff', borderRadius: 4, boxShadow: '0 18px 50px rgba(0,0,0,.45)', overflow: 'hidden', border: `5px solid ${INK}`, position: 'relative' }}>
 
         {/* HUD */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 18px', background: '#ffe44d', borderBottom: `5px solid ${INK}` }}>
@@ -58,13 +66,12 @@ export default function BattleScreen() {
           </div>
           <div style={{ flex: 1 }} />
           <div style={{ flex: 'none', display: 'flex', alignItems: 'center', gap: 7, padding: '5px 12px', background: '#fff', border: `3px solid ${INK}`, borderRadius: 9 }}>
-            <span style={{ fontFamily: "'Bangers', cursive", fontSize: 15, color: INK, letterSpacing: '.03em', whiteSpace: 'nowrap' }}>SOUTH AMERICA</span>
+            <span style={{ fontFamily: "'Bangers', cursive", fontSize: 15, color: INK, letterSpacing: '.03em', whiteSpace: 'nowrap' }}>ROUND {roundNumber} · SOUTH AMERICA</span>
           </div>
           <button
             type="button"
-            title="Coming soon"
-            disabled
-            style={{ flex: 'none', padding: '8px 16px', background: INK, color: '#ffe44d', border: 'none', borderRadius: 9, fontFamily: "'Bangers', cursive", fontSize: 17, letterSpacing: '.04em', whiteSpace: 'nowrap', cursor: 'not-allowed', opacity: 0.85 }}
+            onClick={openToolbox}
+            style={{ flex: 'none', padding: '8px 16px', background: INK, color: '#ffe44d', border: 'none', borderRadius: 9, fontFamily: "'Bangers', cursive", fontSize: 17, letterSpacing: '.04em', whiteSpace: 'nowrap', cursor: 'pointer' }}
           >
             🛠 TOOLBOX
           </button>
@@ -93,8 +100,8 @@ export default function BattleScreen() {
             </div>
           ))}
 
-          {poofs.map((p) => (
-            <Poof key={p.id} left={p.left} bottom={p.bottom} onDone={() => clearPoof(p.id)} />
+          {effects.map((e) => (
+            <Effect key={e.id} kind={e.kind} left={e.left} bottom={e.bottom} onDone={() => clearEffect(e.id)} />
           ))}
 
           {selectedIdx !== null && (
@@ -103,8 +110,18 @@ export default function BattleScreen() {
               <div style={{ position: 'absolute', left: 18, top: 16, padding: '6px 13px', background: INK, color: '#ffe44d', borderRadius: 7, fontFamily: "'Bangers', cursive", fontSize: 16, letterSpacing: '.05em', zIndex: 200 }}>
                 ❙❙ PAUSED · PICK A WEAPON
               </div>
-              <WeaponPicker currentWeapon={redFrontWeapons[selectedIdx]} onPick={handlePick} />
+              <WeaponPicker currentWeapon={selectedSoldier?.weapon} money={money} onPick={handlePick} />
             </>
+          )}
+
+          {roundResult && (
+            <RoundBanner
+              result={roundResult}
+              roundNumber={roundNumber}
+              onNext={startNextRound}
+              onRetry={retryRound}
+              onToolbox={openToolbox}
+            />
           )}
         </div>
 
@@ -124,6 +141,15 @@ export default function BattleScreen() {
 
         <TypeLegend />
       </div>
+
+      {toolboxOpen && (
+        <ToolboxModal
+          money={money}
+          onBuySoldier={buyExtraSoldier}
+          onUpgradeTypes={upgradeArmyTypes}
+          onClose={closeToolbox}
+        />
+      )}
     </div>
   );
 }
