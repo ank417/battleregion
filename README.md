@@ -1,25 +1,39 @@
-# CODING AGENTS: READ THIS FIRST
+# Battle Region
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+A kids' battle game (ages 6-10): your red army defends South America against
+a blue alien invasion. Tap a front-row soldier, pick a weapon, and fight —
+win rounds to earn money and upgrade your army through the toolbox.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+## Run it in your browser
 
-## What you should do — IMPORTANT
+```bash
+cd app
+npm install
+npm run dev
+```
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+Then open the URL it prints (usually [http://localhost:5173](http://localhost:5173)) in your browser.
 
-**Read `project/Battle Screen.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+Other useful commands (run from inside `app/`):
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+```bash
+npm run build    # production build to app/dist
+npm run preview  # serve the production build locally
+npm run lint      # run ESLint
+```
 
-## About the design files
+## How to play
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+1. Tap a front-row red soldier to select them.
+2. Pick a weapon from the popup (free karate, or pay for javelin/bow/rifle).
+3. The soldier fights the next alien in line — win and you earn money and
+   the alien is marked defeated; lose and that soldier falls.
+4. Beat every alien to win the round and advance — aliens come back tougher
+   (stronger weapons, a type that counters your army). Lose, and you can
+   spend money in the 🛠 Toolbox to recruit soldiers or evolve your army's
+   types before retrying the same round.
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+## Project layout
 
-## Bundle contents
-
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Battle Screen Design Specifications` project files (HTML prototypes, assets, components)
+- `app/` — the React + Vite implementation of the game.
+- `project/`, `chats/` — original Claude Design handoff files this was built from.
