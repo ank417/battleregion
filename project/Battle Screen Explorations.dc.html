@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&family=Bangers&family=Luckiest+Guy&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes wiggle { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+  @keyframes poof { 0% { transform: scale(.4); opacity: 0; } 40% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+  @keyframes floatUp { 0% { transform: translateY(6px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(-22px); opacity: 0; } }
+  @keyframes pulseRing { 0%,100% { box-shadow: 0 0 0 4px rgba(255,255,255,.85), 0 0 0 9px rgba(255,210,60,.7); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,.85), 0 0 0 13px rgba(255,210,60,0); } }
+</style>
+</helmet>
+
+<div style="width:max-content; min-width:100%; min-height:100vh; box-sizing:border-box; padding:48px; background:#e7e5df; font-family:'Nunito',sans-serif;">
+
+  <div style="margin-bottom:6px; font-size:13px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#8a8780;">Earth Defenders &middot; Battle Screen</div>
+  <div style="margin-bottom:6px; font-size:30px; font-weight:900; color:#2a2824;">Pick your look &mdash; 3 art directions</div>
+  <div style="margin-bottom:34px; font-size:15px; font-weight:700; color:#8a8780;">Side-view jungle in South America &middot; <span style="color:#d23b3b;">Red military</span> vs <span style="color:#2a6fdb;">Blue aliens</span> &middot; 42 vs 42 &middot; tap a soldier, the game pauses, then pick a weapon</div>
+
+  <div style="display:flex; gap:48px; align-items:flex-start;">
+
+    <!-- ================= FRAME A : CUTE CARTOON ================= -->
+    <div style="flex:none; width:780px;">
+      <div style="margin-bottom:12px; font-size:15px; font-weight:900; color:#2a2824;">A &middot; Cute Cartoon Jungle <span style="font-weight:700; color:#9a978f;">&mdash; soft, chunky, friendly</span></div>
+      <div style="background:#fff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; font-family:'Fredoka',sans-serif;">
+
+        <!-- HUD -->
+        <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; background:#fff7e8; border-bottom:4px solid #ffe1a6;">
+          <div style="display:flex; align-items:center; gap:8px; padding:7px 14px 7px 9px; background:#fff; border:3px solid #ffcf5c; border-radius:999px; box-shadow:0 2px 0 #f0bd3e;">
+            <div style="width:24px; height:24px; border-radius:50%; background:#ffd34d; border:3px solid #e9b62f; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#a9791a;">$</div>
+            <div style="font-size:20px; font-weight:700; color:#3a3733;">2,480</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; padding:7px 12px; background:#ffe6e6; border:3px solid #f3b3b3; border-radius:999px;">
+            <div style="width:16px; height:16px; border-radius:5px; background:#e24a4a;"></div>
+            <div style="font-size:17px; font-weight:700; color:#b23434;">42</div>
+          </div>
+          <div style="font-size:18px; font-weight:600; color:#b8b4ac;">vs</div>
+          <div style="display:flex; align-items:center; gap:8px; padding:7px 12px; background:#e3eeff; border:3px solid #aac6f3; border-radius:999px;">
+            <div style="width:16px; height:16px; border-radius:5px; background:#2a6fdb;"></div>
+            <div style="font-size:17px; font-weight:700; color:#2657aa;">37</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex; align-items:center; gap:7px; padding:7px 13px; background:#ffd34d; border:3px solid #e9b62f; border-radius:999px; box-shadow:0 2px 0 #d9a92c;">
+            <div style="font-size:15px;">&#128736;</div>
+            <div style="font-size:15px; font-weight:700; color:#7a5a12;">Toolbox</div>
+          </div>
+        </div>
+
+        <!-- Battlefield -->
+        <div style="position:relative; height:392px; background:linear-gradient(#bfe8ff 0%, #d8f3df 52%, #cfeccf 53%, #cfeccf 100%); overflow:hidden;">
+          <!-- sun -->
+          <div style="position:absolute; right:60px; top:24px; width:54px; height:54px; border-radius:50%; background:#ffe07a; box-shadow:0 0 0 10px rgba(255,224,122,.35);"></div>
+          <!-- back hills -->
+          <div style="position:absolute; left:-40px; bottom:118px; width:340px; height:230px; border-radius:50%; background:#aadcaa;"></div>
+          <div style="position:absolute; right:-60px; bottom:118px; width:420px; height:260px; border-radius:50%; background:#9ed29e;"></div>
+          <!-- jungle trees -->
+          <div style="position:absolute; left:60px; bottom:120px;"><div style="width:14px; height:70px; background:#9c6b3f; border-radius:6px; margin:0 auto;"></div><div style="width:90px; height:60px; background:#4faf5a; border-radius:50%; margin-top:-86px;"></div></div>
+          <div style="position:absolute; right:120px; bottom:120px;"><div style="width:14px; height:60px; background:#9c6b3f; border-radius:6px; margin:0 auto;"></div><div style="width:76px; height:54px; background:#57b863; border-radius:50%; margin-top:-78px;"></div></div>
+          <!-- ground -->
+          <div style="position:absolute; left:0; right:0; bottom:0; height:120px; background:linear-gradient(#7fc47f,#5fa85f);"></div>
+          <div style="position:absolute; left:0; right:0; bottom:108px; height:14px; background:#8fd08f; border-radius:50%;"></div>
+
+          <!-- RED soldiers (left) -->
+          <div style="position:absolute; left:40px; bottom:96px; animation:bob 2.6s ease-in-out infinite;">
+            <div style="position:relative; width:64px; height:96px;">
+              <div style="position:absolute; left:16px; top:14px; width:34px; height:34px; border-radius:50%; background:#f6cda0;"></div>
+              <div style="position:absolute; left:18px; top:26px; width:6px; height:6px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:30px; top:26px; width:6px; height:6px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:10px; top:6px; width:46px; height:24px; border-radius:23px 23px 0 0; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:8px; top:48px; width:50px; height:42px; border-radius:16px; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:22px; top:57px; width:24px; height:24px; border-radius:50%; background:#fff; border:2px solid #ffd34d; display:flex; align-items:center; justify-content:center; font-size:13px;">&#128293;</div>
+            </div>
+          </div>
+          <div style="position:absolute; left:120px; bottom:90px; animation:bob 2.6s ease-in-out infinite .5s;">
+            <div style="position:relative; width:58px; height:90px; transform:scale(.92);">
+              <div style="position:absolute; left:15px; top:14px; width:32px; height:32px; border-radius:50%; background:#f6cda0;"></div>
+              <div style="position:absolute; left:17px; top:25px; width:5px; height:5px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:28px; top:25px; width:5px; height:5px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:9px; top:6px; width:44px; height:23px; border-radius:22px 22px 0 0; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:7px; top:46px; width:48px; height:40px; border-radius:16px; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:20px; top:54px; width:23px; height:23px; border-radius:50%; background:#fff; border:2px solid #ffd34d; display:flex; align-items:center; justify-content:center; font-size:12px;">&#127807;</div>
+            </div>
+          </div>
+
+          <!-- highlighted RED soldier with weapon picker -->
+          <div style="position:absolute; left:208px; bottom:96px;">
+            <div style="position:relative; width:64px; height:96px;">
+              <div style="position:absolute; left:8px; top:48px; width:50px; height:42px; border-radius:50%; animation:pulseRing 1.6s ease-in-out infinite;"></div>
+              <div style="position:absolute; left:16px; top:14px; width:34px; height:34px; border-radius:50%; background:#f6cda0;"></div>
+              <div style="position:absolute; left:18px; top:26px; width:6px; height:6px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:30px; top:26px; width:6px; height:6px; border-radius:50%; background:#3a2e23;"></div>
+              <div style="position:absolute; left:10px; top:6px; width:46px; height:24px; border-radius:23px 23px 0 0; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:8px; top:48px; width:50px; height:42px; border-radius:16px; background:#e24a4a; border:3px solid #b23434;"></div>
+              <div style="position:absolute; left:22px; top:57px; width:24px; height:24px; border-radius:50%; background:#fff; border:2px solid #ffd34d; display:flex; align-items:center; justify-content:center; font-size:13px;">&#9889;</div>
+            </div>
+          </div>
+
+          <!-- BLUE aliens (right) -->
+          <div style="position:absolute; right:60px; bottom:96px; animation:bob 2.4s ease-in-out infinite .2s;">
+            <div style="position:relative; width:64px; height:104px;">
+              <div style="position:absolute; left:18px; top:0; width:3px; height:14px; background:#2a6fdb; transform-origin:bottom; animation:wiggle 2s ease-in-out infinite;"></div>
+              <div style="position:absolute; left:16px; top:-3px; width:8px; height:8px; border-radius:50%; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:42px; top:0; width:3px; height:14px; background:#2a6fdb; transform-origin:bottom; animation:wiggle 2s ease-in-out infinite .3s;"></div>
+              <div style="position:absolute; left:40px; top:-3px; width:8px; height:8px; border-radius:50%; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:12px; top:12px; width:40px; height:38px; border-radius:50%; background:#3a86e0; border:3px solid #2657aa;"></div>
+              <div style="position:absolute; left:20px; top:24px; width:11px; height:11px; border-radius:50%; background:#fff;"></div>
+              <div style="position:absolute; left:33px; top:24px; width:11px; height:11px; border-radius:50%; background:#fff;"></div>
+              <div style="position:absolute; left:24px; top:28px; width:5px; height:5px; border-radius:50%; background:#1a2a44;"></div>
+              <div style="position:absolute; left:37px; top:28px; width:5px; height:5px; border-radius:50%; background:#1a2a44;"></div>
+              <div style="position:absolute; left:10px; top:52px; width:44px; height:42px; border-radius:16px; background:#3a86e0; border:3px solid #2657aa;"></div>
+            </div>
+          </div>
+          <div style="position:absolute; right:150px; bottom:92px; animation:bob 2.4s ease-in-out infinite .7s;">
+            <div style="position:relative; width:56px; height:96px; transform:scale(.9);">
+              <div style="position:absolute; left:16px; top:0; width:3px; height:12px; background:#2a6fdb;"></div>
+              <div style="position:absolute; left:14px; top:-2px; width:7px; height:7px; border-radius:50%; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:37px; top:0; width:3px; height:12px; background:#2a6fdb;"></div>
+              <div style="position:absolute; left:35px; top:-2px; width:7px; height:7px; border-radius:50%; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:11px; top:12px; width:36px; height:34px; border-radius:50%; background:#46a0c9; border:3px solid #2f6e8e;"></div>
+              <div style="position:absolute; left:18px; top:22px; width:10px; height:10px; border-radius:50%; background:#fff;"></div>
+              <div style="position:absolute; left:30px; top:22px; width:10px; height:10px; border-radius:50%; background:#fff;"></div>
+              <div style="position:absolute; left:21px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a2a44;"></div>
+              <div style="position:absolute; left:33px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a2a44;"></div>
+              <div style="position:absolute; left:9px; top:48px; width:40px; height:40px; border-radius:16px; background:#46a0c9; border:3px solid #2f6e8e;"></div>
+            </div>
+          </div>
+
+          <!-- poof + money on a defeated alien -->
+          <div style="position:absolute; right:240px; bottom:120px;">
+            <div style="position:relative; width:60px; height:60px;">
+              <div style="position:absolute; inset:0; border-radius:50%; background:radial-gradient(#ffffff,#e7f4ff 60%,rgba(231,244,255,0)); animation:poof 1.8s ease-out infinite;"></div>
+              <div style="position:absolute; left:6px; top:-2px; font-size:20px; animation:poof 1.8s ease-out infinite .1s;">&#10024;</div>
+            </div>
+            <div style="position:absolute; left:6px; top:-18px; padding:3px 9px; background:#3ec46b; color:#fff; font-weight:700; font-size:14px; border-radius:999px; border:2px solid #2ea257; animation:floatUp 1.8s ease-out infinite;">+$100</div>
+          </div>
+
+          <!-- PAUSED tag -->
+          <div style="position:absolute; left:16px; top:14px; display:flex; align-items:center; gap:6px; padding:5px 11px; background:rgba(42,40,36,.82); color:#ffe9a8; border-radius:999px; font-size:12px; font-weight:600;">
+            <span style="display:inline-flex; gap:2px;"><span style="width:3px; height:11px; background:#ffe9a8; border-radius:1px;"></span><span style="width:3px; height:11px; background:#ffe9a8; border-radius:1px;"></span></span> Paused &middot; choose a weapon
+          </div>
+
+          <!-- WEAPON PICKER popup -->
+          <div style="position:absolute; left:150px; top:36px; width:188px; background:#fff; border:4px solid #ffcf5c; border-radius:18px; box-shadow:0 10px 24px rgba(0,0,0,.18); padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#9a8a5a; text-transform:uppercase; letter-spacing:.06em; margin-bottom:9px;">Pick a weapon</div>
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#fff7e8; border:3px solid #ffd34d; border-radius:12px;"><span style="font-size:15px; font-weight:700; color:#3a3733;">&#9889; Rifle</span><span style="font-size:13px; font-weight:700; color:#b89227;">$2,000</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f6f5f1; border:3px solid #e6e3da; border-radius:12px;"><span style="font-size:15px; font-weight:600; color:#5a574f;">&#127993; Bow</span><span style="font-size:13px; font-weight:700; color:#9a978f;">$200</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f6f5f1; border:3px solid #e6e3da; border-radius:12px;"><span style="font-size:15px; font-weight:600; color:#5a574f;">&#129529; Javelin</span><span style="font-size:13px; font-weight:700; color:#9a978f;">$5</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f6f5f1; border:3px solid #e6e3da; border-radius:12px;"><span style="font-size:15px; font-weight:600; color:#5a574f;">&#129354; Karate</span><span style="font-size:13px; font-weight:700; color:#3ec46b;">free</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom weapon shelf -->
+        <div style="display:flex; align-items:center; gap:10px; padding:12px 16px; background:#fff7e8; border-top:4px solid #ffe1a6;">
+          <div style="font-size:13px; font-weight:600; color:#b09a5e; text-transform:uppercase; letter-spacing:.06em;">Squad</div>
+          <div style="display:flex; gap:8px;">
+            <div style="width:40px; height:40px; border-radius:12px; background:#fff; border:3px solid #ffd34d; display:flex; align-items:center; justify-content:center; font-size:17px;">&#128293;</div>
+            <div style="width:40px; height:40px; border-radius:12px; background:#fff; border:3px solid #cfe6ff; display:flex; align-items:center; justify-content:center; font-size:17px;">&#127807;</div>
+            <div style="width:40px; height:40px; border-radius:12px; background:#fff; border:3px solid #d9f0d9; display:flex; align-items:center; justify-content:center; font-size:17px;">&#127754;</div>
+            <div style="width:40px; height:40px; border-radius:12px; background:#fff; border:3px solid #ffe1d0; display:flex; align-items:center; justify-content:center; font-size:17px;">&#11088;</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="padding:9px 18px; background:#3ec46b; color:#fff; font-weight:700; font-size:16px; border-radius:999px; box-shadow:0 3px 0 #2ea257;">Attack!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FRAME B : COMIC BOOK ================= -->
+    <div style="flex:none; width:780px;">
+      <div style="margin-bottom:12px; font-size:15px; font-weight:900; color:#2a2824;">B &middot; Bold Comic Book <span style="font-weight:700; color:#9a978f;">&mdash; thick ink, halftone, POW!</span></div>
+      <div style="background:#fff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; font-family:'Nunito',sans-serif; border:4px solid #1a1a1a;">
+
+        <!-- HUD -->
+        <div style="display:flex; align-items:center; gap:12px; padding:11px 16px; background:#ffe44d; border-bottom:4px solid #1a1a1a;">
+          <div style="display:flex; align-items:center; gap:8px; padding:6px 14px; background:#fff; border:3px solid #1a1a1a; border-radius:8px; box-shadow:3px 3px 0 #1a1a1a;">
+            <div style="font-family:'Bangers',cursive; font-size:18px; color:#1a1a1a; letter-spacing:.04em;">$ 2,480</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:7px; padding:6px 12px; background:#e24a4a; border:3px solid #1a1a1a; border-radius:8px;">
+            <div style="width:14px; height:14px; background:#fff; border:2px solid #1a1a1a;"></div>
+            <div style="font-family:'Bangers',cursive; font-size:18px; color:#fff;">42</div>
+          </div>
+          <div style="font-family:'Bangers',cursive; font-size:20px; color:#1a1a1a;">VS</div>
+          <div style="display:flex; align-items:center; gap:7px; padding:6px 12px; background:#2a6fdb; border:3px solid #1a1a1a; border-radius:8px;">
+            <div style="width:14px; height:14px; background:#fff; border:2px solid #1a1a1a;"></div>
+            <div style="font-family:'Bangers',cursive; font-size:18px; color:#fff;">37</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex; align-items:center; gap:7px; padding:7px 14px; background:#1a1a1a; color:#ffe44d; border-radius:8px; font-family:'Bangers',cursive; font-size:16px; letter-spacing:.04em;">&#128736; TOOLBOX</div>
+        </div>
+
+        <!-- Battlefield -->
+        <div style="position:relative; height:392px; background:radial-gradient(circle at 1px 1px, rgba(26,26,26,.08) 1px, transparent 0) 0 0/12px 12px, linear-gradient(#8fd0ef 0%,#bfe6c2 52%,#7cc47e 53%,#6bb86d 100%); overflow:hidden;">
+          <!-- action burst -->
+          <div style="position:absolute; right:200px; top:30px; width:120px; height:120px; background:#ffe44d; clip-path:polygon(50% 0,61% 22%,87% 13%,76% 38%,100% 50%,76% 62%,87% 87%,61% 78%,50% 100%,39% 78%,13% 87%,24% 62%,0 50%,24% 38%,13% 13%,39% 22%); border:0; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:'Bangers',cursive; font-size:30px; color:#e24a4a; -webkit-text-stroke:2px #1a1a1a; transform:rotate(-12deg);">POW!</span>
+          </div>
+          <!-- ground line -->
+          <div style="position:absolute; left:0; right:0; bottom:118px; height:4px; background:#1a1a1a;"></div>
+          <!-- trees -->
+          <div style="position:absolute; left:70px; bottom:122px;"><div style="width:16px; height:64px; background:#7a4a26; border:3px solid #1a1a1a; margin:0 auto;"></div><div style="width:88px; height:58px; background:#3fa14e; border:3px solid #1a1a1a; border-radius:50%; margin-top:-84px;"></div></div>
+          <div style="position:absolute; right:110px; bottom:122px;"><div style="width:16px; height:54px; background:#7a4a26; border:3px solid #1a1a1a; margin:0 auto;"></div><div style="width:74px; height:50px; background:#4caf5a; border:3px solid #1a1a1a; border-radius:50%; margin-top:-74px;"></div></div>
+
+          <!-- RED soldiers -->
+          <div style="position:absolute; left:44px; bottom:96px; animation:bob 2.6s ease-in-out infinite;">
+            <div style="position:relative; width:64px; height:96px;">
+              <div style="position:absolute; left:16px; top:14px; width:34px; height:34px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:20px; top:26px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:31px; top:26px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:5px; width:48px; height:24px; border-radius:23px 23px 0 0; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:7px; top:48px; width:52px; height:42px; border-radius:12px; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:22px; top:57px; width:24px; height:24px; border-radius:50%; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:12px;">&#128293;</div>
+            </div>
+          </div>
+          <div style="position:absolute; left:128px; bottom:90px; animation:bob 2.6s ease-in-out infinite .5s;">
+            <div style="position:relative; width:58px; height:90px; transform:scale(.92);">
+              <div style="position:absolute; left:15px; top:14px; width:32px; height:32px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:19px; top:25px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:29px; top:25px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:8px; top:5px; width:46px; height:23px; border-radius:22px 22px 0 0; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:6px; top:46px; width:50px; height:40px; border-radius:12px; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:20px; top:54px; width:23px; height:23px; border-radius:50%; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:11px;">&#127807;</div>
+            </div>
+          </div>
+          <!-- highlighted -->
+          <div style="position:absolute; left:216px; bottom:96px;">
+            <div style="position:relative; width:64px; height:96px;">
+              <div style="position:absolute; left:7px; top:48px; width:52px; height:42px; border-radius:14px; animation:pulseRing 1.6s ease-in-out infinite;"></div>
+              <div style="position:absolute; left:16px; top:14px; width:34px; height:34px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:20px; top:26px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:31px; top:26px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:5px; width:48px; height:24px; border-radius:23px 23px 0 0; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:7px; top:48px; width:52px; height:42px; border-radius:12px; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:22px; top:57px; width:24px; height:24px; border-radius:50%; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:12px;">&#9889;</div>
+            </div>
+          </div>
+
+          <!-- BLUE aliens -->
+          <div style="position:absolute; right:64px; bottom:96px; animation:bob 2.4s ease-in-out infinite .2s;">
+            <div style="position:relative; width:64px; height:104px;">
+              <div style="position:absolute; left:18px; top:0; width:3px; height:14px; background:#1a1a1a; transform-origin:bottom; animation:wiggle 2s ease-in-out infinite;"></div>
+              <div style="position:absolute; left:15px; top:-4px; width:9px; height:9px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:42px; top:0; width:3px; height:14px; background:#1a1a1a; transform-origin:bottom; animation:wiggle 2s ease-in-out infinite .3s;"></div>
+              <div style="position:absolute; left:39px; top:-4px; width:9px; height:9px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:11px; top:12px; width:42px; height:38px; border-radius:50%; background:#3a86e0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:19px; top:23px; width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:33px; top:23px; width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:24px; top:27px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:38px; top:27px; width:5px; height:5px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:52px; width:46px; height:42px; border-radius:12px; background:#3a86e0; border:3px solid #1a1a1a;"></div>
+            </div>
+          </div>
+          <div style="position:absolute; right:156px; bottom:92px; animation:bob 2.4s ease-in-out infinite .7s;">
+            <div style="position:relative; width:56px; height:96px; transform:scale(.9);">
+              <div style="position:absolute; left:16px; top:0; width:3px; height:12px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:13px; top:-4px; width:8px; height:8px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:37px; top:0; width:3px; height:12px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:34px; top:-4px; width:8px; height:8px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:10px; top:12px; width:38px; height:34px; border-radius:50%; background:#46a0c9; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:17px; top:21px; width:11px; height:11px; border-radius:50%; background:#fff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:30px; top:21px; width:11px; height:11px; border-radius:50%; background:#fff; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:21px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:34px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:8px; top:48px; width:42px; height:40px; border-radius:12px; background:#46a0c9; border:3px solid #1a1a1a;"></div>
+            </div>
+          </div>
+
+          <!-- PAUSED tag -->
+          <div style="position:absolute; left:16px; top:14px; display:flex; align-items:center; gap:6px; padding:5px 12px; background:#1a1a1a; color:#ffe44d; border-radius:6px; font-family:'Bangers',cursive; font-size:15px; letter-spacing:.05em;">&#10073;&#10073; PAUSED</div>
+
+          <!-- weapon picker -->
+          <div style="position:absolute; left:158px; top:40px; width:188px; background:#fff; border:4px solid #1a1a1a; border-radius:10px; box-shadow:6px 6px 0 #1a1a1a; padding:12px;">
+            <div style="font-family:'Bangers',cursive; font-size:18px; color:#1a1a1a; letter-spacing:.04em; margin-bottom:9px;">PICK A WEAPON!</div>
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#ffe44d; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:800; color:#1a1a1a;">&#9889; Rifle</span><span style="font-size:13px; font-weight:800; color:#1a1a1a;">$2,000</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733;">&#127993; Bow</span><span style="font-size:13px; font-weight:800; color:#3a3733;">$200</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733;">&#129529; Javelin</span><span style="font-size:13px; font-weight:800; color:#3a3733;">$5</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733;">&#129354; Karate</span><span style="font-size:13px; font-weight:800; color:#e24a4a;">FREE</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom shelf -->
+        <div style="display:flex; align-items:center; gap:10px; padding:11px 16px; background:#ffe44d; border-top:4px solid #1a1a1a;">
+          <div style="font-family:'Bangers',cursive; font-size:16px; color:#1a1a1a; letter-spacing:.05em;">SQUAD</div>
+          <div style="display:flex; gap:8px;">
+            <div style="width:40px; height:40px; border-radius:8px; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:17px;">&#128293;</div>
+            <div style="width:40px; height:40px; border-radius:8px; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:17px;">&#127807;</div>
+            <div style="width:40px; height:40px; border-radius:8px; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:17px;">&#127754;</div>
+            <div style="width:40px; height:40px; border-radius:8px; background:#fff; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:17px;">&#11088;</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="padding:8px 20px; background:#e24a4a; color:#fff; font-family:'Bangers',cursive; font-size:18px; letter-spacing:.05em; border-radius:8px; border:3px solid #1a1a1a; box-shadow:3px 3px 0 #1a1a1a;">ATTACK!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= FRAME C : RETRO PIXEL ================= -->
+    <div style="flex:none; width:780px;">
+      <div style="margin-bottom:12px; font-size:15px; font-weight:900; color:#2a2824;">C &middot; Retro Pixel Arcade <span style="font-weight:700; color:#9a978f;">&mdash; 8-bit, blocky, classic</span></div>
+      <div style="background:#10131c; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; font-family:'Press Start 2P',monospace; image-rendering:pixelated;">
+
+        <!-- HUD -->
+        <div style="display:flex; align-items:center; gap:14px; padding:13px 16px; background:#1c2233; border-bottom:4px solid #3a4664;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:16px; height:16px; background:#ffd34d; box-shadow:-4px 0 #e9b62f, 0 -4px #ffe98a;"></div>
+            <div style="font-size:11px; color:#ffd34d;">2480</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;"><div style="width:13px; height:13px; background:#e24a4a;"></div><div style="font-size:11px; color:#ff8a8a;">42</div></div>
+          <div style="font-size:10px; color:#5a6480;">VS</div>
+          <div style="display:flex; align-items:center; gap:6px;"><div style="width:13px; height:13px; background:#3a86e0;"></div><div style="font-size:11px; color:#8ec0ff;">37</div></div>
+          <div style="flex:1;"></div>
+          <div style="padding:7px 11px; background:#ffd34d; color:#1c2233; font-size:10px; border:3px solid #fff;">TOOLBOX</div>
+        </div>
+
+        <!-- Battlefield -->
+        <div style="position:relative; height:392px; background:linear-gradient(#1b2f4a 0%,#274a3a 55%,#2f5a3a 56%,#234a2c 100%); overflow:hidden;">
+          <!-- pixel stars -->
+          <div style="position:absolute; left:60px; top:30px; width:6px; height:6px; background:#fff;"></div>
+          <div style="position:absolute; left:300px; top:18px; width:6px; height:6px; background:#fff;"></div>
+          <div style="position:absolute; right:120px; top:44px; width:6px; height:6px; background:#fff;"></div>
+          <div style="position:absolute; right:240px; top:24px; width:6px; height:6px; background:#ffd34d;"></div>
+          <!-- pixel moon -->
+          <div style="position:absolute; right:54px; top:26px; width:48px; height:48px; background:#e8eefc; box-shadow:inset -10px 0 #c4cde8;"></div>
+          <!-- ground rows -->
+          <div style="position:absolute; left:0; right:0; bottom:0; height:118px; background:#234a2c; box-shadow:inset 0 6px #2f5a3a, inset 0 -118px 0 -112px #3a6b46;"></div>
+          <div style="position:absolute; left:0; right:0; bottom:112px; height:6px; background:#3a6b46;"></div>
+          <!-- pixel trees -->
+          <div style="position:absolute; left:74px; bottom:118px;"><div style="width:14px; height:46px; background:#6b4426; margin:0 auto;"></div><div style="width:54px; height:48px; background:#2f8f43; margin-top:-90px; box-shadow:inset 0 0 0 4px #247a36;"></div></div>
+          <div style="position:absolute; right:120px; bottom:118px;"><div style="width:14px; height:40px; background:#6b4426; margin:0 auto;"></div><div style="width:46px; height:42px; background:#36a04c; margin-top:-78px; box-shadow:inset 0 0 0 4px #2a8a3e;"></div></div>
+
+          <!-- RED pixel soldiers -->
+          <div style="position:absolute; left:48px; bottom:96px; animation:bob 2.6s steps(2) infinite;">
+            <div style="position:relative; width:48px; height:64px;">
+              <div style="position:absolute; left:8px; top:0; width:32px; height:12px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:12px; top:10px; width:24px; height:18px; background:#f6cda0;"></div>
+              <div style="position:absolute; left:17px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:27px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:8px; top:28px; width:32px; height:24px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:18px; top:34px; width:12px; height:12px; background:#fff;"></div>
+              <div style="position:absolute; left:21px; top:37px; width:6px; height:6px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:10px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+              <div style="position:absolute; left:28px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+            </div>
+          </div>
+          <div style="position:absolute; left:128px; bottom:96px; animation:bob 2.6s steps(2) infinite .4s;">
+            <div style="position:relative; width:48px; height:64px; transform:scale(.92);">
+              <div style="position:absolute; left:8px; top:0; width:32px; height:12px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:12px; top:10px; width:24px; height:18px; background:#f6cda0;"></div>
+              <div style="position:absolute; left:17px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:27px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:8px; top:28px; width:32px; height:24px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:18px; top:34px; width:12px; height:12px; background:#fff;"></div>
+              <div style="position:absolute; left:21px; top:37px; width:6px; height:6px; background:#36a04c;"></div>
+              <div style="position:absolute; left:10px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+              <div style="position:absolute; left:28px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+            </div>
+          </div>
+          <!-- highlighted pixel soldier -->
+          <div style="position:absolute; left:210px; bottom:96px;">
+            <div style="position:relative; width:48px; height:64px; outline:4px solid #ffd34d; outline-offset:4px; animation:pulseRing 1.6s steps(2) infinite;">
+              <div style="position:absolute; left:8px; top:0; width:32px; height:12px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:12px; top:10px; width:24px; height:18px; background:#f6cda0;"></div>
+              <div style="position:absolute; left:17px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:27px; top:16px; width:5px; height:5px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:8px; top:28px; width:32px; height:24px; background:#e24a4a;"></div>
+              <div style="position:absolute; left:18px; top:34px; width:12px; height:12px; background:#fff;"></div>
+              <div style="position:absolute; left:21px; top:37px; width:6px; height:6px; background:#ffd34d;"></div>
+              <div style="position:absolute; left:10px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+              <div style="position:absolute; left:28px; top:52px; width:10px; height:12px; background:#3a3733;"></div>
+            </div>
+          </div>
+
+          <!-- BLUE pixel aliens -->
+          <div style="position:absolute; right:64px; bottom:96px; animation:bob 2.4s steps(2) infinite .2s;">
+            <div style="position:relative; width:48px; height:70px;">
+              <div style="position:absolute; left:12px; top:0; width:4px; height:10px; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:32px; top:0; width:4px; height:10px; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:8px; top:10px; width:32px; height:22px; background:#3a86e0;"></div>
+              <div style="position:absolute; left:13px; top:16px; width:8px; height:8px; background:#fff;"></div>
+              <div style="position:absolute; left:27px; top:16px; width:8px; height:8px; background:#fff;"></div>
+              <div style="position:absolute; left:15px; top:18px; width:4px; height:4px; background:#1a2a44;"></div>
+              <div style="position:absolute; left:29px; top:18px; width:4px; height:4px; background:#1a2a44;"></div>
+              <div style="position:absolute; left:8px; top:32px; width:32px; height:24px; background:#3a86e0;"></div>
+              <div style="position:absolute; left:10px; top:56px; width:10px; height:12px; background:#2657aa;"></div>
+              <div style="position:absolute; left:28px; top:56px; width:10px; height:12px; background:#2657aa;"></div>
+            </div>
+          </div>
+          <div style="position:absolute; right:150px; bottom:96px; animation:bob 2.4s steps(2) infinite .6s;">
+            <div style="position:relative; width:48px; height:70px; transform:scale(.9);">
+              <div style="position:absolute; left:12px; top:0; width:4px; height:10px; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:32px; top:0; width:4px; height:10px; background:#7fd4ff;"></div>
+              <div style="position:absolute; left:8px; top:10px; width:32px; height:22px; background:#46a0c9;"></div>
+              <div style="position:absolute; left:13px; top:16px; width:8px; height:8px; background:#fff;"></div>
+              <div style="position:absolute; left:27px; top:16px; width:8px; height:8px; background:#fff;"></div>
+              <div style="position:absolute; left:15px; top:18px; width:4px; height:4px; background:#1a2a44;"></div>
+              <div style="position:absolute; left:29px; top:18px; width:4px; height:4px; background:#1a2a44;"></div>
+              <div style="position:absolute; left:8px; top:32px; width:32px; height:24px; background:#46a0c9;"></div>
+              <div style="position:absolute; left:10px; top:56px; width:10px; height:12px; background:#2f6e8e;"></div>
+              <div style="position:absolute; left:28px; top:56px; width:10px; height:12px; background:#2f6e8e;"></div>
+            </div>
+          </div>
+
+          <!-- pixel poof + money -->
+          <div style="position:absolute; right:236px; bottom:120px;">
+            <div style="font-size:10px; color:#7CFF7C; animation:floatUp 1.8s steps(3) infinite;">+100</div>
+            <div style="position:absolute; left:-4px; top:8px; width:10px; height:10px; background:#fff; animation:poof 1.8s steps(3) infinite;"></div>
+            <div style="position:absolute; left:10px; top:2px; width:8px; height:8px; background:#cfe6ff; animation:poof 1.8s steps(3) infinite .15s;"></div>
+          </div>
+
+          <!-- paused -->
+          <div style="position:absolute; left:16px; top:14px; padding:6px 10px; background:#10131c; color:#ffd34d; font-size:9px; border:3px solid #ffd34d;">|| PAUSED</div>
+
+          <!-- weapon picker -->
+          <div style="position:absolute; left:160px; top:40px; width:200px; background:#10131c; border:4px solid #ffd34d; padding:13px;">
+            <div style="font-size:10px; color:#ffd34d; margin-bottom:11px; line-height:1.5;">PICK<br>WEAPON</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#ffd34d; color:#10131c; font-size:8px;"><span>RIFLE</span><span>2000</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#1c2233; color:#8ec0ff; font-size:8px; border:2px solid #3a4664;"><span>BOW</span><span>200</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#1c2233; color:#8ec0ff; font-size:8px; border:2px solid #3a4664;"><span>JAVELIN</span><span>5</span></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#1c2233; color:#7CFF7C; font-size:8px; border:2px solid #3a4664;"><span>KARATE</span><span>FREE</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom shelf -->
+        <div style="display:flex; align-items:center; gap:12px; padding:13px 16px; background:#1c2233; border-top:4px solid #3a4664;">
+          <div style="font-size:9px; color:#8ec0ff;">SQUAD</div>
+          <div style="display:flex; gap:8px;">
+            <div style="width:38px; height:38px; background:#10131c; border:3px solid #e24a4a; display:flex; align-items:center; justify-content:center; font-size:15px;">&#128293;</div>
+            <div style="width:38px; height:38px; background:#10131c; border:3px solid #36a04c; display:flex; align-items:center; justify-content:center; font-size:15px;">&#127807;</div>
+            <div style="width:38px; height:38px; background:#10131c; border:3px solid #3a86e0; display:flex; align-items:center; justify-content:center; font-size:15px;">&#127754;</div>
+            <div style="width:38px; height:38px; background:#10131c; border:3px solid #ffd34d; display:flex; align-items:center; justify-content:center; font-size:15px;">&#11088;</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="padding:9px 16px; background:#e24a4a; color:#fff; font-size:10px; border:3px solid #fff;">ATTACK</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:30px; font-size:14px; font-weight:700; color:#8a8780; max-width:760px; line-height:1.6;">Same battle, three looks. Each shows: money counter (top-left), live 42-vs-42 team counts, a highlighted soldier with the <span style="color:#2a2824;">pause &amp; pick-a-weapon</span> panel, a cartoony <span style="color:#3ec46b;">poof + $100</span> when an alien is defeated, and the squad shelf with the 7 type symbols. Tell me which direction you like (A, B, or C) and I&rsquo;ll build it into a real playable battle.</div>
+
+</div>
+</x-dc>
+</body>
+</html>

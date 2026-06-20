@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Bangers&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  @keyframes sway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+  @keyframes vinesway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+</style>
+</helmet>
+
+<div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:36px; background:#1d2a1f; font-family:'Nunito',sans-serif;">
+  <div style="width:1000px; background:#fff; border-radius:4px; box-shadow:0 18px 50px rgba(0,0,0,.45); overflow:hidden; border:5px solid #1a1a1a;">
+
+    <!-- HUD -->
+    <div style="display:flex; align-items:center; gap:12px; padding:12px 18px; background:#ffe44d; border-bottom:5px solid #1a1a1a;">
+      <div style="display:flex; align-items:center; gap:8px; padding:6px 15px; background:#fff; border:3px solid #1a1a1a; border-radius:9px; box-shadow:3px 3px 0 #1a1a1a;">
+        <div style="width:20px; height:20px; border-radius:50%; background:#ffd34d; border:3px solid #1a1a1a; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; color:#7a5a12; font-family:'Nunito',sans-serif;">$</div>
+        <div style="font-family:'Bangers',cursive; font-size:20px; color:#1a1a1a; letter-spacing:.04em;">2,480</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:7px; padding:6px 13px; background:#e24a4a; border:3px solid #1a1a1a; border-radius:9px;"><div style="width:13px; height:13px; background:#fff; border:2px solid #1a1a1a;"></div><div style="font-family:'Bangers',cursive; font-size:19px; color:#fff;">42</div></div>
+      <div style="font-family:'Bangers',cursive; font-size:21px; color:#1a1a1a;">VS</div>
+      <div style="display:flex; align-items:center; gap:7px; padding:6px 13px; background:#2a6fdb; border:3px solid #1a1a1a; border-radius:9px;"><div style="width:13px; height:13px; background:#fff; border:2px solid #1a1a1a;"></div><div style="font-family:'Bangers',cursive; font-size:19px; color:#fff;">37</div></div>
+      <div style="flex:1;"></div>
+      <div style="flex:none; display:flex; align-items:center; gap:7px; padding:5px 12px; background:#fff; border:3px solid #1a1a1a; border-radius:9px;">
+        <span style="font-family:'Bangers',cursive; font-size:15px; color:#1a1a1a; letter-spacing:.03em; white-space:nowrap;">SOUTH AMERICA</span>
+      </div>
+      <div style="flex:none; padding:8px 16px; background:#1a1a1a; color:#ffe44d; border-radius:9px; font-family:'Bangers',cursive; font-size:17px; letter-spacing:.04em; white-space:nowrap;">&#128736; TOOLBOX</div>
+    </div>
+
+    <!-- ===================== JUNGLE BATTLEFIELD ===================== -->
+    <div style="position:relative; height:472px; overflow:hidden; background:linear-gradient(#9fdcff 0%, #c4ecf6 30%, #e6f6cf 58%, #d6f0c2 60%);">
+
+      <!-- sun + haze -->
+      <div style="position:absolute; right:120px; top:30px; width:78px; height:78px; border-radius:50%; background:#fff1b8; box-shadow:0 0 0 16px rgba(255,241,184,.35), 0 0 0 32px rgba(255,241,184,.18); z-index:1;"></div>
+
+      <!-- far Andes mountains (atmospheric, no ink) -->
+      <div style="position:absolute; left:60px; bottom:248px; width:300px; height:185px; background:#9ec4c0; clip-path:polygon(0 100%, 38% 8%, 64% 100%); z-index:1;"></div>
+      <div style="position:absolute; left:160px; bottom:248px; width:280px; height:150px; background:#a9cfc8; clip-path:polygon(0 100%, 50% 14%, 100% 100%); z-index:1;"></div>
+      <div style="position:absolute; right:90px; bottom:248px; width:320px; height:165px; background:#9ec4c0; clip-path:polygon(0 100%, 46% 10%, 100% 100%); z-index:1;"></div>
+      <!-- snow caps -->
+      <div style="position:absolute; left:150px; bottom:368px; width:60px; height:34px; background:#f3fbff; clip-path:polygon(0 100%, 50% 0, 100% 100%); z-index:2;"></div>
+      <div style="position:absolute; right:206px; bottom:380px; width:54px; height:30px; background:#f3fbff; clip-path:polygon(0 100%, 50% 0, 100% 100%); z-index:2;"></div>
+
+      <!-- stepped stone pyramid (South American ruin) -->
+      <div style="position:absolute; left:428px; bottom:248px; z-index:4;">
+        <div style="width:46px; height:18px; margin:0 auto; background:#c7a779; border:3px solid #7a5a36; border-bottom:none;"></div>
+        <div style="width:78px; height:18px; margin:0 auto; background:#bd9b6a; border:3px solid #7a5a36; border-bottom:none;"></div>
+        <div style="width:112px; height:18px; margin:0 auto; background:#c7a779; border:3px solid #7a5a36; border-bottom:none;"></div>
+        <div style="width:148px; height:20px; margin:0 auto; background:#bd9b6a; border:3px solid #7a5a36; border-bottom:none;"></div>
+        <!-- temple steps -->
+        <div style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:14px; height:54px; background:#8f7048; border-left:2px solid #5f4628; border-right:2px solid #5f4628;"></div>
+      </div>
+
+      <!-- back jungle canopy -->
+      <div style="position:absolute; left:-30px; bottom:230px; width:260px; height:130px; border-radius:50%; background:#4aa257; z-index:3;"></div>
+      <div style="position:absolute; left:150px; bottom:236px; width:240px; height:120px; border-radius:50%; background:#3f9a52; z-index:3;"></div>
+      <div style="position:absolute; right:120px; bottom:232px; width:280px; height:135px; border-radius:50%; background:#4aa257; z-index:3;"></div>
+      <div style="position:absolute; right:-40px; bottom:230px; width:240px; height:120px; border-radius:50%; background:#3f9a52; z-index:3;"></div>
+
+      <!-- palm trees on the ground -->
+      <div style="position:absolute; left:36px; bottom:236px; z-index:4;">
+        <div style="width:16px; height:96px; margin:0 auto; background:#9c6b3f; border:3px solid #5f4226; border-radius:0 0 6px 6px; transform:rotate(-5deg); transform-origin:bottom;"></div>
+        <div style="position:absolute; left:-22px; top:-14px;">
+          <div style="position:absolute; width:62px; height:24px; background:#3f9a52; border:3px solid #2a7038; border-radius:50%; transform:rotate(-28deg);"></div>
+          <div style="position:absolute; width:62px; height:24px; background:#4aa257; border:3px solid #2a7038; border-radius:50%; transform:rotate(18deg); left:6px;"></div>
+          <div style="position:absolute; width:58px; height:22px; background:#46a35a; border:3px solid #2a7038; border-radius:50%; transform:rotate(-6deg); left:0; top:-8px;"></div>
+        </div>
+      </div>
+      <div style="position:absolute; right:48px; bottom:238px; z-index:4;">
+        <div style="width:16px; height:84px; margin:0 auto; background:#9c6b3f; border:3px solid #5f4226; border-radius:0 0 6px 6px; transform:rotate(5deg); transform-origin:bottom;"></div>
+        <div style="position:absolute; left:-24px; top:-12px;">
+          <div style="position:absolute; width:60px; height:22px; background:#3f9a52; border:3px solid #2a7038; border-radius:50%; transform:rotate(28deg); left:8px;"></div>
+          <div style="position:absolute; width:60px; height:22px; background:#4aa257; border:3px solid #2a7038; border-radius:50%; transform:rotate(-18deg);"></div>
+          <div style="position:absolute; width:56px; height:20px; background:#46a35a; border:3px solid #2a7038; border-radius:50%; transform:rotate(6deg); left:4px; top:-8px;"></div>
+        </div>
+      </div>
+
+      <!-- ground -->
+      <div style="position:absolute; left:0; right:0; bottom:0; height:250px; background:linear-gradient(#74c06f 0%, #5aa657 55%, #4f9a4f 100%); z-index:5;"></div>
+      <div style="position:absolute; left:0; right:0; bottom:246px; height:10px; background:#86cf7d; border-bottom:3px solid #3f7d3f; z-index:5;"></div>
+      <!-- winding river -->
+      <div style="position:absolute; left:0; right:0; bottom:30px; height:34px; background:#6fc6e8; border-top:3px solid #4a9fc4; border-bottom:3px solid #4a9fc4; opacity:.55; z-index:5; transform:skewY(-1deg);"></div>
+      <!-- grass tufts -->
+      <div style="position:absolute; left:120px; bottom:236px; width:26px; height:14px; background:#4f9a4f; border-radius:50% 50% 0 0; z-index:6;"></div>
+      <div style="position:absolute; right:200px; bottom:232px; width:30px; height:16px; background:#4f9a4f; border-radius:50% 50% 0 0; z-index:6;"></div>
+      <div style="position:absolute; left:460px; bottom:228px; width:24px; height:13px; background:#4f9a4f; border-radius:50% 50% 0 0; z-index:6;"></div>
+
+      <!-- hanging vines -->
+      <div style="position:absolute; left:240px; top:0; width:4px; height:84px; background:#3f8a48; transform-origin:top; animation:vinesway 5s ease-in-out infinite; z-index:7;"><div style="position:absolute; bottom:-6px; left:-6px; width:16px; height:10px; background:#4aa257; border-radius:50%;"></div></div>
+      <div style="position:absolute; right:300px; top:0; width:4px; height:62px; background:#3f8a48; transform-origin:top; animation:vinesway 6s ease-in-out infinite .5s; z-index:7;"><div style="position:absolute; bottom:-6px; left:-6px; width:14px; height:9px; background:#4aa257; border-radius:50%;"></div></div>
+
+      <!-- ====== ARMIES (4 ranks each) ====== -->
+      <sc-for list="{{ r1Red }}" as="s" hint-placeholder-count="12">
+        <div style="position:absolute; left:{{ s.left }}; bottom:{{ s.bottom }}; transform:{{ s.tf }}; transform-origin:bottom center; z-index:{{ s.z }};">
+          <sc-if value="{{ s.detailed }}" hint-placeholder-val="{{ true }}"><dc-import name="ComicSoldier" team="red" type="{{ s.type }}" weapon="{{ s.weapon }}" hint-size="64px,104px"></dc-import></sc-if>
+          <sc-if value="{{ s.simple }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative; width:30px; height:46px;">
+              <div style="position:absolute; left:8px; top:38px; width:6px; height:9px; background:#b23434; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:17px; top:38px; width:6px; height:9px; background:#b23434; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:5px; top:18px; width:20px; height:24px; border-radius:6px; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:24px; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid {{ s.type.color }};"></div>
+              <div style="position:absolute; left:7px; top:2px; width:16px; height:16px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:4px; top:-2px; width:22px; height:11px; border-radius:9px 9px 0 0; background:#e24a4a; border:3px solid #1a1a1a;"></div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <sc-for list="{{ r1Blue }}" as="s" hint-placeholder-count="12">
+        <div style="position:absolute; left:{{ s.left }}; bottom:{{ s.bottom }}; transform:{{ s.tf }}; transform-origin:bottom center; z-index:{{ s.z }};">
+          <sc-if value="{{ s.detailed }}" hint-placeholder-val="{{ true }}"><dc-import name="ComicSoldier" team="blue" type="{{ s.type }}" weapon="{{ s.weapon }}" hint-size="64px,104px"></dc-import></sc-if>
+          <sc-if value="{{ s.simple }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative; width:30px; height:46px;">
+              <div style="position:absolute; left:8px; top:38px; width:6px; height:9px; background:#2657aa; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:17px; top:38px; width:6px; height:9px; background:#2657aa; border:2px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:5px; top:18px; width:20px; height:24px; border-radius:6px; background:#3a86e0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:24px; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid {{ s.type.color }};"></div>
+              <div style="position:absolute; left:7px; top:3px; width:16px; height:16px; border-radius:50%; background:#3a86e0; border:3px solid #1a1a1a;"></div>
+              <div style="position:absolute; left:9px; top:-3px; width:3px; height:7px; background:#1a1a1a;"></div>
+              <div style="position:absolute; left:18px; top:-3px; width:3px; height:7px; background:#1a1a1a;"></div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <!-- foreground framing leaves -->
+      <div style="position:absolute; left:-30px; bottom:-26px; width:150px; height:130px; background:#2f7a3e; border:4px solid #1f5a2c; border-radius:60% 0 60% 60%; transform:rotate(20deg); animation:sway 6s ease-in-out infinite; z-index:80;"><div style="position:absolute; left:50%; top:14px; width:3px; height:80px; background:#1f5a2c; transform:translateX(-50%) rotate(-12deg);"></div></div>
+      <div style="position:absolute; right:-34px; bottom:-30px; width:150px; height:130px; background:#2f7a3e; border:4px solid #1f5a2c; border-radius:0 60% 60% 60%; transform:rotate(-20deg); animation:sway 6.5s ease-in-out infinite .4s; z-index:80;"><div style="position:absolute; left:50%; top:14px; width:3px; height:80px; background:#1f5a2c; transform:translateX(-50%) rotate(12deg);"></div></div>
+
+      <!-- paused tag + selected weapon picker -->
+      <div style="position:absolute; left:18px; top:16px; padding:6px 13px; background:#1a1a1a; color:#ffe44d; border-radius:7px; font-family:'Bangers',cursive; font-size:16px; letter-spacing:.05em; z-index:200;">&#10073;&#10073; PAUSED &middot; PICK A WEAPON</div>
+      <div style="position:absolute; left:272px; top:54px; width:222px; background:#fff; border:4px solid #1a1a1a; border-radius:12px; box-shadow:6px 6px 0 #1a1a1a; padding:13px; z-index:200;">
+        <div style="font-family:'Bangers',cursive; font-size:19px; color:#1a1a1a; letter-spacing:.03em; margin-bottom:10px; white-space:nowrap;">PICK A WEAPON!</div>
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 11px; background:#ffe44d; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:800; color:#1a1a1a; white-space:nowrap;">&#9889; Rifle</span><span style="font-size:13px; font-weight:800; color:#1a1a1a; white-space:nowrap;">$2,000</span></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733; white-space:nowrap;">&#127993; Bow</span><span style="font-size:13px; font-weight:800; color:#3a3733; white-space:nowrap;">$200</span></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733; white-space:nowrap;">&#128305; Javelin</span><span style="font-size:13px; font-weight:800; color:#3a3733; white-space:nowrap;">$5</span></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 11px; background:#f4f3ef; border:3px solid #1a1a1a; border-radius:7px;"><span style="font-size:15px; font-weight:700; color:#3a3733; white-space:nowrap;">&#129354; Karate</span><span style="font-size:13px; font-weight:800; color:#e24a4a; white-space:nowrap;">FREE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== ROSTER BARS ===================== -->
+    <div style="padding:10px 16px; background:#fff3f3; border-top:5px solid #1a1a1a;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:7px;"><span style="font-family:'Bangers',cursive; font-size:15px; color:#b23434; letter-spacing:.04em;">YOUR ARMY</span><span style="font-size:12px; font-weight:800; color:#b23434;">42 ready &middot; tap a soldier to send them to the front</span></div>
+      <div style="display:flex; flex-wrap:wrap; gap:5px;">
+        <sc-for list="{{ rosterRed }}" as="m" hint-placeholder-count="42">
+          <div style="position:relative; width:27px; height:31px; background:#fff; border:2px solid #1a1a1a; border-radius:5px; display:flex; align-items:flex-end; justify-content:center; overflow:hidden;">
+            <div style="position:absolute; top:3px; left:50%; transform:translateX(-50%); width:13px; height:13px; border-radius:50%; background:#f6cda0; border:2px solid #1a1a1a;"></div>
+            <div style="position:absolute; top:1px; left:50%; transform:translateX(-50%); width:17px; height:8px; border-radius:6px 6px 0 0; background:#e24a4a; border:2px solid #1a1a1a;"></div>
+            <div style="width:14px; height:14px; border-radius:5px 5px 0 0; background:#fff; border:2px solid {{ m.type.color }}; border-bottom:none; display:flex; align-items:center; justify-content:center; font-size:8px;">{{ m.type.icon }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:10px 16px; background:#eef4ff; border-top:4px solid #1a1a1a;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:7px;"><span style="font-family:'Bangers',cursive; font-size:15px; color:#2657aa; letter-spacing:.04em;">ALIEN ARMY</span><span style="font-size:12px; font-weight:800; color:#2657aa;">37 left &middot; 5 defeated</span></div>
+      <div style="display:flex; flex-wrap:wrap; gap:5px;">
+        <sc-for list="{{ rosterBlue }}" as="m" hint-placeholder-count="42">
+          <div style="position:relative; width:27px; height:31px; background:{{ m.bg }}; border:2px solid #1a1a1a; border-radius:5px; display:flex; align-items:flex-end; justify-content:center; overflow:hidden; opacity:{{ m.op }};">
+            <div style="position:absolute; top:3px; left:50%; transform:translateX(-50%); width:13px; height:13px; border-radius:50%; background:#3a86e0; border:2px solid #1a1a1a;"></div>
+            <div style="position:absolute; top:0px; left:7px; width:2px; height:5px; background:#1a1a1a;"></div>
+            <div style="position:absolute; top:0px; right:7px; width:2px; height:5px; background:#1a1a1a;"></div>
+            <div style="width:14px; height:14px; border-radius:5px 5px 0 0; background:#fff; border:2px solid {{ m.type.color }}; border-bottom:none; display:flex; align-items:center; justify-content:center; font-size:8px;">{{ m.type.icon }}</div>
+            <sc-if value="{{ m.dead }}" hint-placeholder-val="{{ false }}"><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:17px; color:#b23434; font-weight:900;">&times;</div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- type legend -->
+    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:11px 18px; background:#ffe44d; border-top:5px solid #1a1a1a;">
+      <span style="font-family:'Bangers',cursive; font-size:16px; color:#1a1a1a; letter-spacing:.04em;">TYPES</span>
+      <sc-for list="{{ types }}" as="t" hint-placeholder-count="7">
+        <span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:23px; height:23px; border-radius:50%; background:#fff; border:3px solid {{ t.color }}; display:inline-flex; align-items:center; justify-content:center; font-size:12px;">{{ t.icon }}</span><span style="font-size:13px; font-weight:800; color:#1a1a1a;">{{ t.name }}</span></span>
+      </sc-for>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  T() {
+    return [
+      { icon: '\u{1F525}', color: '#ff7a3c', name: 'Fire' },
+      { icon: '\u{1F30A}', color: '#2aa9d9', name: 'Ocean' },
+      { icon: '\u{1F343}', color: '#4caf5a', name: 'Plant' },
+      { icon: '\u2601\uFE0F', color: '#5f9fe0', name: 'Cloud' },
+      { icon: '\u26F0\uFE0F', color: '#c08a4a', name: 'Land' },
+      { icon: '\u{1FA90}', color: '#9b6cd6', name: 'Space' },
+      { icon: '\u{1F30C}', color: '#e05fb0', name: 'Galaxy' },
+    ];
+  }
+
+  ranks(side) {
+    const T = this.T();
+    const W = ['rifle', 'bow', 'javelin', 'karate'];
+    const rows = [
+      { n: 5, sc: 1.0, b: 80, det: true, z: 60 },
+      { n: 8, sc: 0.74, b: 138, det: false, z: 50 },
+      { n: 12, sc: 0.58, b: 182, det: false, z: 40 },
+      { n: 17, sc: 0.46, b: 216, det: false, z: 30 },
+    ];
+    const x0 = side === 'red' ? 24 : 548;
+    const w = 426;
+    const out = [];
+    let k = side === 'red' ? 0 : 3;
+    rows.forEach((r) => {
+      for (let i = 0; i < r.n; i++) {
+        const frac = (i + 0.5) / r.n;
+        const left = Math.round(x0 + frac * w);
+        out.push({
+          left: left + 'px', bottom: r.b + 'px',
+          tf: side === 'red' ? 'scale(' + r.sc + ')' : 'scale(' + r.sc + ') scaleX(-1)',
+          z: r.z, detailed: r.det, simple: !r.det,
+          type: T[k % 7], weapon: W[k % 4],
+        });
+        k++;
+      }
+    });
+    return out;
+  }
+
+  roster(side) {
+    const T = this.T();
+    const out = [];
+    for (let i = 0; i < 42; i++) {
+      const dead = side === 'blue' && i >= 37;
+      out.push({
+        type: T[i % 7], dead,
+        op: dead ? '0.45' : '1',
+        bg: dead ? '#d7def0' : (side === 'blue' ? '#ffffff' : '#ffffff'),
+      });
+    }
+    return out;
+  }
+
+  renderVals() {
+    return {
+      types: this.T(),
+      r1Red: this.ranks('red'), r1Blue: this.ranks('blue'),
+      rosterRed: this.roster('red'), rosterBlue: this.roster('blue'),
+    };
+  }
+}
+</script>
+</body>
+</html>

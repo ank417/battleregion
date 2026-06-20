@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  @keyframes wig { 0%,100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+</style>
+</helmet>
+<div style="position:relative; width:64px; height:104px; font-family:'Nunito',sans-serif;">
+
+  <!-- back arm -->
+  <div style="position:absolute; left:7px; top:46px; width:10px; height:26px; border-radius:6px; background:{{ uniformDark }}; border:3px solid #1a1a1a; z-index:1;"></div>
+
+  <!-- legs -->
+  <div style="position:absolute; left:19px; top:74px; width:11px; height:24px; border-radius:0 0 4px 4px; background:{{ uniformDark }}; border:3px solid #1a1a1a; z-index:2;"></div>
+  <div style="position:absolute; left:34px; top:74px; width:11px; height:24px; border-radius:0 0 4px 4px; background:{{ uniformDark }}; border:3px solid #1a1a1a; z-index:2;"></div>
+  <!-- boots -->
+  <div style="position:absolute; left:13px; top:93px; width:19px; height:9px; border-radius:5px; background:#2a2a2a; border:2px solid #1a1a1a; z-index:3;"></div>
+  <div style="position:absolute; left:32px; top:93px; width:19px; height:9px; border-radius:5px; background:#2a2a2a; border:2px solid #1a1a1a; z-index:3;"></div>
+
+  <!-- torso -->
+  <div style="position:absolute; left:15px; top:42px; width:34px; height:36px; border-radius:11px; background:{{ uniform }}; border:3px solid #1a1a1a; z-index:4;"></div>
+  <!-- chest type shield -->
+  <div style="position:absolute; left:22px; top:49px; width:20px; height:23px; border-radius:6px 6px 10px 10px; background:#fff; border:3px solid {{ typeColor }}; z-index:5; display:flex; align-items:center; justify-content:center; font-size:11px; line-height:1;">{{ typeIcon }}</div>
+
+  <!-- front arm -->
+  <div style="position:absolute; left:44px; top:46px; width:10px; height:22px; border-radius:6px; background:{{ uniform }}; border:3px solid #1a1a1a; z-index:6;"></div>
+  <!-- hand -->
+  <div style="position:absolute; left:45px; top:62px; width:13px; height:13px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a; z-index:9;"></div>
+
+  <!-- WEAPONS -->
+  <sc-if value="{{ isRifle }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:40px; top:56px; width:36px; height:9px; border-radius:2px; background:#2f2f2f; border:2px solid #1a1a1a; transform:rotate(-7deg); z-index:8;"></div>
+    <div style="position:absolute; left:44px; top:64px; width:7px; height:12px; border-radius:0 0 3px 3px; background:#5a3a22; border:2px solid #1a1a1a; z-index:7;"></div>
+  </sc-if>
+  <sc-if value="{{ isBow }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:54px; top:44px; width:18px; height:44px; border:4px solid #7a4a26; border-radius:50%; border-right-color:transparent; z-index:8;"></div>
+    <div style="position:absolute; left:57px; top:46px; width:2px; height:40px; background:#caa86a; z-index:8;"></div>
+  </sc-if>
+  <sc-if value="{{ isJavelin }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:34px; top:28px; width:5px; height:58px; background:#9c6b3f; border:2px solid #5a3a1a; transform:rotate(-40deg); transform-origin:center; z-index:8;"></div>
+    <div style="position:absolute; left:62px; top:30px; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:13px solid #c7c7c7; transform:rotate(50deg); z-index:8;"></div>
+  </sc-if>
+  <sc-if value="{{ isKarate }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:6px; top:40px; width:13px; height:13px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a; z-index:9;"></div>
+    <div style="position:absolute; left:50px; top:30px; font-size:13px; z-index:9; transform:rotate(12deg);">&#10024;</div>
+  </sc-if>
+
+  <!-- HEAD: red soldier -->
+  <sc-if value="{{ isRed }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:18px; top:16px; width:28px; height:28px; border-radius:50%; background:#f6cda0; border:3px solid #1a1a1a; z-index:5;"></div>
+    <div style="position:absolute; left:24px; top:28px; width:4px; height:4px; border-radius:50%; background:#1a1a1a; z-index:6;"></div>
+    <div style="position:absolute; left:33px; top:28px; width:4px; height:4px; border-radius:50%; background:#1a1a1a; z-index:6;"></div>
+    <div style="position:absolute; left:14px; top:6px; width:36px; height:20px; border-radius:18px 18px 2px 2px; background:{{ uniform }}; border:3px solid #1a1a1a; z-index:6;"></div>
+    <div style="position:absolute; left:12px; top:23px; width:40px; height:6px; border-radius:3px; background:{{ uniformDark }}; border:2px solid #1a1a1a; z-index:7;"></div>
+  </sc-if>
+  <!-- HEAD: blue alien -->
+  <sc-if value="{{ isBlue }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; left:21px; top:0px; width:3px; height:13px; background:#1a1a1a; transform-origin:bottom; animation:wig 2s ease-in-out infinite; z-index:4;"></div>
+    <div style="position:absolute; left:18px; top:-4px; width:9px; height:9px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a; z-index:5;"></div>
+    <div style="position:absolute; left:40px; top:0px; width:3px; height:13px; background:#1a1a1a; transform-origin:bottom; animation:wig 2s ease-in-out infinite .3s; z-index:4;"></div>
+    <div style="position:absolute; left:37px; top:-4px; width:9px; height:9px; border-radius:50%; background:#7fd4ff; border:2px solid #1a1a1a; z-index:5;"></div>
+    <div style="position:absolute; left:17px; top:12px; width:30px; height:30px; border-radius:50%; background:{{ uniform }}; border:3px solid #1a1a1a; z-index:5;"></div>
+    <div style="position:absolute; left:22px; top:22px; width:9px; height:9px; border-radius:50%; background:#fff; border:2px solid #1a1a1a; z-index:6;"></div>
+    <div style="position:absolute; left:33px; top:22px; width:9px; height:9px; border-radius:50%; background:#fff; border:2px solid #1a1a1a; z-index:6;"></div>
+    <div style="position:absolute; left:25px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a2a44; z-index:7;"></div>
+    <div style="position:absolute; left:36px; top:25px; width:4px; height:4px; border-radius:50%; background:#1a2a44; z-index:7;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:120,&quot;height&quot;:140},&quot;team&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;red&quot;,&quot;blue&quot;],&quot;default&quot;:&quot;red&quot;,&quot;tsType&quot;:&quot;'red'|'blue'&quot;},&quot;type&quot;:{&quot;editor&quot;:null,&quot;default&quot;:{&quot;icon&quot;:&quot;🔥&quot;,&quot;color&quot;:&quot;#ff7a3c&quot;,&quot;name&quot;:&quot;Fire&quot;},&quot;tsType&quot;:&quot;{icon:string,color:string,name:string}&quot;},&quot;weapon&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;rifle&quot;,&quot;bow&quot;,&quot;javelin&quot;,&quot;karate&quot;],&quot;default&quot;:&quot;rifle&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const team = this.props.team || 'red';
+    const isRed = team === 'red';
+    const t = this.props.type || { icon: '\u{1F525}', color: '#ff7a3c', name: 'Fire' };
+    const w = this.props.weapon || 'karate';
+    return {
+      isRed, isBlue: !isRed,
+      uniform: isRed ? '#e24a4a' : '#3a86e0',
+      uniformDark: isRed ? '#b23434' : '#2657aa',
+      typeIcon: t.icon, typeColor: t.color, typeName: t.name,
+      isRifle: w === 'rifle', isBow: w === 'bow', isJavelin: w === 'javelin', isKarate: w === 'karate',
+    };
+  }
+}
+</script>
+</body>
+</html>
