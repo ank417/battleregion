@@ -4,7 +4,8 @@ import { beats, getNode } from '../data/typeTree';
 import { buildBattlefield, ROW_CONFIG } from '../lib/ranks';
 
 const FRONT_COUNT = ROW_CONFIG[0].n;
-const TICK_MS = 1200;
+const GAP_MS = 380;
+const ANIM_MS = 480;
 const BLUE_TYPE_OFFSET = 7;
 
 // each side gets exactly 2 soldiers of every type (21 types x 2 = 42) — equal power distribution.
@@ -31,10 +32,12 @@ function resolveDuel(red, blue) {
 
 function createInitialState() {
   return {
+    screen: 'intro', // 'intro' | 'battle'
     money: 2480,
     redRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', 0),
     blueRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', BLUE_TYPE_OFFSET),
     selectedIdx: null,
+    highlightIdx: null,
     effects: [],
     effectSeq: 0,
     roundNumber: 1,
@@ -42,14 +45,23 @@ function createInitialState() {
     alienWeaponTier: 0,
     toolboxOpen: false,
     recruitPickerOpen: false,
+    lineFighting: false,
+    lineRedIdx: [],
+    lineBlueIdx: [],
+    activeRed: [],
+    activeBlue: [],
+    pendingOutcome: null,
   };
 }
 
 function reducer(state, action) {
   switch (action.type) {
+    case 'START_GAME':
+      return { ...state, screen: 'battle' };
+
     case 'SELECT': {
-      if (state.roundResult) return state;
-      return { ...state, selectedIdx: state.selectedIdx === action.idx ? null : action.idx };
+      if (state.roundResult || state.lineFighting) return state;
+      return { ...state, selectedIdx: state.selectedIdx === action.idx ? null : action.idx, highlightIdx: null };
     }
 
     case 'CLOSE_PICKER':
@@ -69,57 +81,124 @@ function reducer(state, action) {
       return { ...state, money, redRoster, selectedIdx: null };
     }
 
-    case 'TICK': {
-      if (state.roundResult) return state;
+    case 'HIGHLIGHT_MOVE': {
+      if (state.roundResult || state.lineFighting || state.toolboxOpen || state.selectedIdx !== null) return state;
+      const frontRed = frontLine(state.redRoster, FRONT_COUNT);
+      if (frontRed.length === 0) return state;
+      const cur = state.highlightIdx === null ? -1 : state.highlightIdx;
+      const next = Math.min(frontRed.length - 1, Math.max(0, cur + action.dir));
+      return { ...state, highlightIdx: next };
+    }
+
+    case 'ENTER_SELECT': {
+      if (state.roundResult || state.lineFighting || state.highlightIdx === null) return state;
+      const frontRed = frontLine(state.redRoster, FRONT_COUNT);
+      const target = frontRed[state.highlightIdx];
+      if (!target) return state;
+      return { ...state, selectedIdx: target.idx };
+    }
+
+    case 'START_LINE': {
+      if (state.lineFighting || state.roundResult || state.toolboxOpen || state.selectedIdx !== null) return state;
       const redFront = frontLine(state.redRoster, FRONT_COUNT);
       const blueFront = frontLine(state.blueRoster, FRONT_COUNT);
-      const pairs = Math.min(redFront.length, blueFront.length);
-      if (pairs === 0) return state;
+      if (redFront.length === 0 || blueFront.length === 0) return state;
+      return {
+        ...state,
+        lineFighting: true,
+        lineRedIdx: redFront.map((m) => m.idx),
+        lineBlueIdx: blueFront.map((m) => m.idx),
+        highlightIdx: null,
+      };
+    }
 
+    case 'ENGAGE': {
+      if (!state.lineFighting || state.pendingOutcome || state.roundResult) return state;
+      const redAliveSet = new Set(state.redRoster.filter((m) => !m.dead).map((m) => m.idx));
+      const blueAliveSet = new Set(state.blueRoster.filter((m) => !m.dead).map((m) => m.idx));
+      const liveLineRed = state.lineRedIdx.filter((i) => redAliveSet.has(i));
+      const liveLineBlue = state.lineBlueIdx.filter((i) => blueAliveSet.has(i));
+      if (liveLineRed.length === 0 || liveLineBlue.length === 0) {
+        return { ...state, lineFighting: false, lineRedIdx: [], lineBlueIdx: [] };
+      }
+
+      const redByIdx = new Map(state.redRoster.map((m) => [m.idx, m]));
+      const blueByIdx = new Map(state.blueRoster.map((m) => [m.idx, m]));
       const redPositions = buildBattlefield('red', state.redRoster);
       const bluePositions = buildBattlefield('blue', state.blueRoster);
-      const deadRed = new Set();
-      const deadBlue = new Set();
-      let money = state.money;
-      const newEffects = [];
+      const pairs = Math.min(liveLineRed.length, liveLineBlue.length);
+      const deadRedIdx = [];
+      const deadBlueIdx = [];
+      const effectsToAdd = [];
+      let moneyGain = 0;
 
       for (let i = 0; i < pairs; i++) {
-        const r = redFront[i];
-        const b = blueFront[i];
+        const r = redByIdx.get(liveLineRed[i]);
+        const b = blueByIdx.get(liveLineBlue[i]);
         if (resolveDuel(r, b)) {
-          deadBlue.add(b.idx);
-          money += BOUNTY_PER_ALIEN;
+          deadBlueIdx.push(b.idx);
+          moneyGain += BOUNTY_PER_ALIEN;
           const pos = bluePositions.find((p) => p.idx === b.idx);
-          newEffects.push({ kind: 'poof', left: pos?.left ?? 500, bottom: (pos?.bottom ?? 80) + 40 });
+          effectsToAdd.push({ kind: 'poof', left: pos?.left ?? 500, bottom: (pos?.bottom ?? 80) + 40 });
         } else {
-          deadRed.add(r.idx);
+          deadRedIdx.push(r.idx);
           const pos = redPositions.find((p) => p.idx === r.idx);
-          newEffects.push({ kind: 'oof', left: pos?.left ?? 500, bottom: (pos?.bottom ?? 80) + 40 });
+          effectsToAdd.push({ kind: 'oof', left: pos?.left ?? 500, bottom: (pos?.bottom ?? 80) + 40 });
         }
       }
 
-      const redRoster = deadRed.size
-        ? state.redRoster.map((m) => (deadRed.has(m.idx) ? { ...m, dead: true } : m))
+      return {
+        ...state,
+        activeRed: liveLineRed.slice(0, pairs),
+        activeBlue: liveLineBlue.slice(0, pairs),
+        pendingOutcome: { deadRedIdx, deadBlueIdx, moneyGain, effectsToAdd },
+      };
+    }
+
+    case 'RESOLVE_ENGAGE': {
+      if (!state.pendingOutcome) return state;
+      const { deadRedIdx, deadBlueIdx, moneyGain, effectsToAdd } = state.pendingOutcome;
+      const deadRedSet = new Set(deadRedIdx);
+      const deadBlueSet = new Set(deadBlueIdx);
+      const redRoster = deadRedSet.size
+        ? state.redRoster.map((m) => (deadRedSet.has(m.idx) ? { ...m, dead: true } : m))
         : state.redRoster;
-      const blueRoster = deadBlue.size
-        ? state.blueRoster.map((m) => (deadBlue.has(m.idx) ? { ...m, dead: true } : m))
+      const blueRoster = deadBlueSet.size
+        ? state.blueRoster.map((m) => (deadBlueSet.has(m.idx) ? { ...m, dead: true } : m))
         : state.blueRoster;
+      const money = state.money + moneyGain;
+      const effects = [
+        ...state.effects,
+        ...effectsToAdd.map((e, i) => ({ id: `fx-${state.effectSeq + i}`, ...e })),
+      ];
+      const effectSeq = state.effectSeq + effectsToAdd.length;
 
       const redAlive = redRoster.some((m) => !m.dead);
       const blueAlive = blueRoster.some((m) => !m.dead);
-      const roundResult = !blueAlive ? 'won' : !redAlive ? 'lost' : null;
+      if (!blueAlive || !redAlive) {
+        return {
+          ...state,
+          redRoster, blueRoster, money, effects, effectSeq,
+          roundResult: !blueAlive ? 'won' : 'lost',
+          lineFighting: false,
+          activeRed: [], activeBlue: [], pendingOutcome: null,
+          lineRedIdx: [], lineBlueIdx: [],
+        };
+      }
+
+      const redAliveSet = new Set(redRoster.filter((m) => !m.dead).map((m) => m.idx));
+      const blueAliveSet = new Set(blueRoster.filter((m) => !m.dead).map((m) => m.idx));
+      const lineRedAlive = state.lineRedIdx.filter((i) => redAliveSet.has(i));
+      const lineBlueAlive = state.lineBlueIdx.filter((i) => blueAliveSet.has(i));
+      const lineResolved = lineRedAlive.length === 0 || lineBlueAlive.length === 0;
 
       return {
         ...state,
-        money,
-        redRoster,
-        blueRoster,
-        roundResult,
-        effects: [
-          ...state.effects,
-          ...newEffects.map((e, i) => ({ id: `fx-${state.effectSeq + i}`, ...e })),
-        ],
-        effectSeq: state.effectSeq + newEffects.length,
+        redRoster, blueRoster, money, effects, effectSeq,
+        activeRed: [], activeBlue: [], pendingOutcome: null,
+        lineFighting: !lineResolved,
+        lineRedIdx: lineResolved ? [] : state.lineRedIdx,
+        lineBlueIdx: lineResolved ? [] : state.lineBlueIdx,
       };
     }
 
@@ -127,6 +206,7 @@ function reducer(state, action) {
       return { ...state, effects: state.effects.filter((e) => e.id !== action.id) };
 
     case 'OPEN_TOOLBOX':
+      if (state.lineFighting) return state;
       return { ...state, toolboxOpen: true };
 
     case 'CLOSE_TOOLBOX':
@@ -165,6 +245,14 @@ function reducer(state, action) {
         alienWeaponTier,
         roundNumber: state.roundNumber + 1,
         roundResult: null,
+        selectedIdx: null,
+        highlightIdx: null,
+        lineFighting: false,
+        lineRedIdx: [],
+        lineBlueIdx: [],
+        activeRed: [],
+        activeBlue: [],
+        pendingOutcome: null,
       };
     }
 
@@ -175,6 +263,14 @@ function reducer(state, action) {
         redRoster: state.redRoster.map((m) => ({ ...m, dead: false })),
         blueRoster: buildTypedRoster(TOTAL_SOLDIERS, WEAPONS[state.alienWeaponTier].id, BLUE_TYPE_OFFSET),
         roundResult: null,
+        selectedIdx: null,
+        highlightIdx: null,
+        lineFighting: false,
+        lineRedIdx: [],
+        lineBlueIdx: [],
+        activeRed: [],
+        activeBlue: [],
+        pendingOutcome: null,
       };
     }
 
@@ -190,14 +286,31 @@ export function useBattle() {
   const blueAlive = useMemo(() => state.blueRoster.filter((m) => !m.dead).length, [state.blueRoster]);
   const blueDefeated = state.blueRoster.length - blueAlive;
 
-  const paused = state.toolboxOpen || state.selectedIdx !== null || !!state.roundResult;
+  const frontRedNow = useMemo(() => frontLine(state.redRoster, FRONT_COUNT), [state.redRoster]);
+  const frontBlueNow = useMemo(() => frontLine(state.blueRoster, FRONT_COUNT), [state.blueRoster]);
+  const highlightedIdx = state.highlightIdx !== null && frontRedNow[state.highlightIdx]
+    ? frontRedNow[state.highlightIdx].idx
+    : null;
+
+  const canStartLine = !state.lineFighting && !state.roundResult && !state.toolboxOpen
+    && state.selectedIdx === null && frontRedNow.length > 0 && frontBlueNow.length > 0;
+
+  const paused = state.toolboxOpen || state.selectedIdx !== null || !!state.roundResult || !state.lineFighting;
+
+  // drives each line's clash forward automatically once started, pausing again once it's resolved
+  useEffect(() => {
+    if (!state.lineFighting || state.pendingOutcome || state.roundResult) return;
+    const t = setTimeout(() => dispatch({ type: 'ENGAGE' }), GAP_MS);
+    return () => clearTimeout(t);
+  }, [state.lineFighting, state.pendingOutcome, state.roundResult]);
 
   useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => dispatch({ type: 'TICK' }), TICK_MS);
-    return () => clearInterval(id);
-  }, [paused]);
+    if (!state.pendingOutcome) return;
+    const t = setTimeout(() => dispatch({ type: 'RESOLVE_ENGAGE' }), ANIM_MS);
+    return () => clearTimeout(t);
+  }, [state.pendingOutcome]);
 
+  const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), []);
   const selectSoldier = useCallback((idx) => dispatch({ type: 'SELECT', idx }), []);
   const closePicker = useCallback(() => dispatch({ type: 'CLOSE_PICKER' }), []);
   const setWeapon = useCallback((weaponId) => dispatch({ type: 'SET_WEAPON', weaponId }), []);
@@ -209,13 +322,19 @@ export function useBattle() {
   const recruitSoldier = useCallback((typeId) => dispatch({ type: 'RECRUIT', typeId }), []);
   const startNextRound = useCallback(() => dispatch({ type: 'NEXT_ROUND' }), []);
   const retryRound = useCallback(() => dispatch({ type: 'RETRY_ROUND' }), []);
+  const startLine = useCallback(() => dispatch({ type: 'START_LINE' }), []);
+  const moveHighlight = useCallback((dir) => dispatch({ type: 'HIGHLIGHT_MOVE', dir }), []);
+  const enterSelect = useCallback(() => dispatch({ type: 'ENTER_SELECT' }), []);
 
   return {
     ...state,
     redAlive,
     blueAlive,
     blueDefeated,
+    highlightedIdx,
+    canStartLine,
     paused,
+    startGame,
     selectSoldier,
     closePicker,
     setWeapon,
@@ -227,5 +346,8 @@ export function useBattle() {
     recruitSoldier,
     startNextRound,
     retryRound,
+    startLine,
+    moveHighlight,
+    enterSelect,
   };
 }

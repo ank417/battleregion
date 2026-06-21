@@ -1,7 +1,7 @@
 const SKIN = '#f6cda0';
 const INK = '#1a1a1a';
 
-export default function ComicSoldier({ team, type, weapon, selected = false, onClick }) {
+export default function ComicSoldier({ team, type, weapon, selected = false, highlighted = false, onClick }) {
   const isRed = team === 'red';
   const uniform = isRed ? '#e24a4a' : '#3a86e0';
   const uniformDark = isRed ? '#b23434' : '#2657aa';
@@ -15,7 +15,11 @@ export default function ComicSoldier({ team, type, weapon, selected = false, onC
         height: 104,
         fontFamily: "'Nunito', sans-serif",
         cursor: onClick ? 'pointer' : 'default',
-        filter: selected ? 'drop-shadow(0 0 0 3px #ffe44d) drop-shadow(0 0 10px #ffe44d)' : 'none',
+        filter: selected
+          ? 'drop-shadow(0 0 0 3px #ffe44d) drop-shadow(0 0 10px #ffe44d)'
+          : highlighted
+            ? 'drop-shadow(0 0 0 3px #4ad6ff) drop-shadow(0 0 8px #4ad6ff)'
+            : 'none',
       }}
     >
       {/* back arm */}
