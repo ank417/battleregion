@@ -1,8 +1,7 @@
-import { getNode } from './typeTree';
+import { TYPE_NODES } from './typeTree';
 
-const STARTER_TYPE_IDS = ['fire', 'ocean', 'plant', 'cloud', 'land', 'space', 'galaxy'];
-
-export const TYPES = STARTER_TYPE_IDS.map((id) => getNode(id));
+// every type in the tree, in a fixed order; used for the 2-per-type roster split.
+export const ALL_TYPES = Object.values(TYPE_NODES);
 
 // weak -> strong; index is also used as combat power when type matchup is neutral.
 export const WEAPONS = [
@@ -23,4 +22,3 @@ export function weaponPrice(weaponId) {
 export const TOTAL_SOLDIERS = 42;
 export const BOUNTY_PER_ALIEN = 100;
 export const EXTRA_SOLDIER_COST = 5000;
-export const TYPE_UPGRADE_COST = 1000;

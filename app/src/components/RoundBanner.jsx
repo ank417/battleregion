@@ -10,7 +10,7 @@ export default function RoundBanner({ result, roundNumber, onNext, onRetry, onTo
         </div>
         <div style={{ fontFamily: "'Nunito', sans-serif", fontSize: 15, color: '#3a3733', margin: '10px 0 18px' }}>
           {won
-            ? 'The aliens are regrouping with stronger weapons and a counter-type. Onward!'
+            ? 'The aliens are regrouping with stronger weapons. Onward!'
             : 'The aliens hold their ground. Visit the toolbox to upgrade before you retry.'}
         </div>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>

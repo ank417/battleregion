@@ -32,16 +32,16 @@ export default function BattleScreen() {
     money, redRoster, blueRoster,
     redAlive, blueAlive, blueDefeated,
     selectedIdx, effects,
-    roundNumber, roundResult, toolboxOpen,
-    selectSoldier, closePicker, attack, clearEffect,
-    buyExtraSoldier, upgradeArmyTypes, startNextRound, retryRound,
+    roundNumber, roundResult, toolboxOpen, recruitPickerOpen,
+    selectSoldier, closePicker, setWeapon, clearEffect,
+    openRecruit, closeRecruit, recruitSoldier, startNextRound, retryRound,
     openToolbox, closeToolbox,
   } = battle;
 
   const redBattlefield = buildBattlefield('red', redRoster);
   const blueBattlefield = buildBattlefield('blue', blueRoster);
 
-  const handlePick = (weaponId) => attack(weaponId, blueBattlefield);
+  const handlePick = (weaponId) => setWeapon(weaponId);
 
   const selectedSoldier = selectedIdx !== null ? redRoster[selectedIdx] : null;
 
@@ -145,8 +145,10 @@ export default function BattleScreen() {
       {toolboxOpen && (
         <ToolboxModal
           money={money}
-          onBuySoldier={buyExtraSoldier}
-          onUpgradeTypes={upgradeArmyTypes}
+          recruitPickerOpen={recruitPickerOpen}
+          onOpenRecruit={openRecruit}
+          onCloseRecruit={closeRecruit}
+          onRecruitSoldier={recruitSoldier}
           onClose={closeToolbox}
         />
       )}
