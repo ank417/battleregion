@@ -18,6 +18,15 @@ function buildTypedRoster(size, weaponId, typeOffset = 0) {
   }));
 }
 
+function shuffle(list) {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 function frontLine(roster, n) {
   return roster.filter((m) => !m.dead).slice(0, n);
 }
@@ -34,14 +43,15 @@ function createInitialState() {
   return {
     screen: 'intro', // 'intro' | 'battle'
     money: 0,
-    redRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', 0),
-    blueRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', BLUE_TYPE_OFFSET),
+    redRoster: shuffle(buildTypedRoster(TOTAL_SOLDIERS, 'karate', 0)),
+    blueRoster: shuffle(buildTypedRoster(TOTAL_SOLDIERS, 'karate', BLUE_TYPE_OFFSET)),
     selectedIdx: null,
     highlightIdx: null,
     effects: [],
     effectSeq: 0,
     roundNumber: 1,
     roundResult: null, // null | 'won' | 'lost'
+    roundStarted: false,
     alienWeaponTier: 0,
     toolboxOpen: false,
     recruitPickerOpen: false,
@@ -60,7 +70,7 @@ function reducer(state, action) {
       return { ...state, screen: 'battle' };
 
     case 'SELECT': {
-      if (state.roundResult || state.lineFighting) return state;
+      if (state.roundResult || state.lineFighting || state.roundStarted) return state;
       return { ...state, selectedIdx: state.selectedIdx === action.idx ? null : action.idx, highlightIdx: null };
     }
 
@@ -68,15 +78,16 @@ function reducer(state, action) {
       return { ...state, selectedIdx: null };
 
     case 'SET_WEAPON': {
-      if (state.selectedIdx === null) return state;
-      const soldier = state.redRoster[state.selectedIdx];
+      if (state.selectedIdx === null || state.roundStarted) return state;
+      const soldier = state.redRoster.find((m) => m.idx === state.selectedIdx);
+      if (!soldier) return state;
       const price = weaponPrice(action.weaponId);
       const alreadyEquipped = soldier.weapon === action.weaponId;
       const canAfford = alreadyEquipped || price === 0 || state.money >= price;
       if (!canAfford) return state;
       const money = alreadyEquipped || price === 0 ? state.money : state.money - price;
-      const redRoster = state.redRoster.map((m, i) =>
-        i === state.selectedIdx ? { ...m, weapon: action.weaponId } : m
+      const redRoster = state.redRoster.map((m) =>
+        m.idx === state.selectedIdx ? { ...m, weapon: action.weaponId } : m
       );
       let effects = state.effects;
       let effectSeq = state.effectSeq;
@@ -93,7 +104,7 @@ function reducer(state, action) {
     }
 
     case 'HIGHLIGHT_MOVE': {
-      if (state.roundResult || state.lineFighting || state.toolboxOpen || state.selectedIdx !== null) return state;
+      if (state.roundResult || state.lineFighting || state.roundStarted || state.toolboxOpen || state.selectedIdx !== null) return state;
       const frontRed = frontLine(state.redRoster, FRONT_COUNT);
       if (frontRed.length === 0) return state;
       const cur = state.highlightIdx === null ? -1 : state.highlightIdx;
@@ -102,7 +113,7 @@ function reducer(state, action) {
     }
 
     case 'ENTER_SELECT': {
-      if (state.roundResult || state.lineFighting || state.highlightIdx === null) return state;
+      if (state.roundResult || state.lineFighting || state.roundStarted || state.highlightIdx === null) return state;
       const frontRed = frontLine(state.redRoster, FRONT_COUNT);
       const target = frontRed[state.highlightIdx];
       if (!target) return state;
@@ -117,6 +128,7 @@ function reducer(state, action) {
       return {
         ...state,
         lineFighting: true,
+        roundStarted: true,
         lineRedIdx: redFront.map((m) => m.idx),
         lineBlueIdx: blueFront.map((m) => m.idx),
         highlightIdx: null,
@@ -251,11 +263,12 @@ function reducer(state, action) {
       const alienWeaponTier = Math.min(state.alienWeaponTier + 1, WEAPONS.length - 1);
       return {
         ...state,
-        redRoster: state.redRoster.map((m) => ({ ...m, dead: false })),
-        blueRoster: buildTypedRoster(TOTAL_SOLDIERS, WEAPONS[alienWeaponTier].id, BLUE_TYPE_OFFSET),
+        redRoster: shuffle(state.redRoster.map((m) => ({ ...m, dead: false }))),
+        blueRoster: shuffle(buildTypedRoster(TOTAL_SOLDIERS, WEAPONS[alienWeaponTier].id, BLUE_TYPE_OFFSET)),
         alienWeaponTier,
         roundNumber: state.roundNumber + 1,
         roundResult: null,
+        roundStarted: false,
         selectedIdx: null,
         highlightIdx: null,
         lineFighting: false,
@@ -271,9 +284,10 @@ function reducer(state, action) {
       if (state.roundResult !== 'lost') return state;
       return {
         ...state,
-        redRoster: state.redRoster.map((m) => ({ ...m, dead: false })),
-        blueRoster: buildTypedRoster(TOTAL_SOLDIERS, WEAPONS[state.alienWeaponTier].id, BLUE_TYPE_OFFSET),
+        redRoster: shuffle(state.redRoster.map((m) => ({ ...m, dead: false }))),
+        blueRoster: shuffle(buildTypedRoster(TOTAL_SOLDIERS, WEAPONS[state.alienWeaponTier].id, BLUE_TYPE_OFFSET)),
         roundResult: null,
+        roundStarted: false,
         selectedIdx: null,
         highlightIdx: null,
         lineFighting: false,

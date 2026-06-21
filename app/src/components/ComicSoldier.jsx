@@ -71,10 +71,7 @@ export default function ComicSoldier({ team, type, weapon, selected = false, hig
         </>
       )}
       {weapon === 'karate' && (
-        <>
-          <div style={{ position: 'absolute', left: 6, top: 40, width: 13, height: 13, borderRadius: '50%', background: SKIN, border: `3px solid ${INK}`, zIndex: 9 }} />
-          <div style={{ position: 'absolute', left: 50, top: 30, fontSize: 13, zIndex: 9, transform: 'rotate(12deg)', animation: attacking ? 'punch-fwd .45s ease' : 'none' }}>✨</div>
-        </>
+        <div style={{ position: 'absolute', left: 6, top: 40, width: 13, height: 13, borderRadius: '50%', background: SKIN, border: `3px solid ${INK}`, zIndex: 9 }} />
       )}
 
       {/* weapon badge — always shown so it's clear what this soldier is assigned */}

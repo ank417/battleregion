@@ -11,6 +11,7 @@ import ToolboxModal from './ToolboxModal';
 import IntroScreen from './IntroScreen';
 import { useBattle } from '../hooks/useBattle';
 import { buildBattlefield } from '../lib/ranks';
+import { BOUNTY_PER_ALIEN } from '../data/types';
 
 const INK = '#1a1a1a';
 
@@ -21,12 +22,20 @@ function Effect({ kind, left, bottom, label, onDone }) {
   }, [onDone]);
   const isPoof = kind === 'poof';
   const isEquip = kind === 'equip';
-  const text = isPoof ? 'POOF!' : isEquip ? (label || 'EQUIPPED!') : 'OOF!';
+  const text = isPoof ? '✨ POOF! ✨' : isEquip ? (label || 'EQUIPPED!') : 'OOF!';
   const color = isEquip ? '#2a8f4a' : '#fff';
   return (
     <div style={{ position: 'absolute', left, bottom, transform: 'translateX(-50%)', zIndex: 220, textAlign: 'center', pointerEvents: 'none', animation: 'poof-pop .9s ease-out forwards' }}>
       <div style={{ fontFamily: "'Bangers', cursive", fontSize: isEquip ? 17 : 26, color, WebkitTextStroke: '2px #1a1a1a', whiteSpace: 'nowrap' }}>{text}</div>
-      {isPoof && <div style={{ fontFamily: "'Bangers', cursive", fontSize: 18, color: '#ffe44d', WebkitTextStroke: '2px #1a1a1a' }}>+$100</div>}
+      {isPoof && <div style={{ fontFamily: "'Bangers', cursive", fontSize: 18, color: '#ffe44d', WebkitTextStroke: '2px #1a1a1a' }}>{`+$${BOUNTY_PER_ALIEN}`}</div>}
+    </div>
+  );
+}
+
+function Clash({ left, bottom }) {
+  return (
+    <div style={{ position: 'absolute', left, bottom, transform: 'translate(-50%, -50%)', fontSize: 30, zIndex: 70, pointerEvents: 'none', animation: 'clash-pop .48s ease-out' }}>
+      💥
     </div>
   );
 }
@@ -37,7 +46,7 @@ export default function BattleScreen() {
     screen, money, redRoster, blueRoster,
     redAlive, blueAlive, blueDefeated,
     selectedIdx, highlightedIdx, effects,
-    roundNumber, roundResult, toolboxOpen, recruitPickerOpen,
+    roundNumber, roundResult, roundStarted, toolboxOpen, recruitPickerOpen,
     lineFighting, canStartLine, activeRed, activeBlue,
     startGame, selectSoldier, closePicker, setWeapon, clearEffect,
     openRecruit, closeRecruit, recruitSoldier, startNextRound, retryRound,
@@ -49,7 +58,15 @@ export default function BattleScreen() {
 
   const handlePick = (weaponId) => setWeapon(weaponId);
 
-  const selectedSoldier = selectedIdx !== null ? redRoster[selectedIdx] : null;
+  const selectedSoldier = selectedIdx !== null ? redRoster.find((m) => m.idx === selectedIdx) : null;
+
+  const clashPoints = activeRed.map((rIdx, i) => {
+    const bIdx = activeBlue[i];
+    const rPos = redBattlefield.find((p) => p.idx === rIdx);
+    const bPos = blueBattlefield.find((p) => p.idx === bIdx);
+    if (!rPos || !bPos) return null;
+    return { id: `${rIdx}-${bIdx}`, left: (rPos.left + bPos.left) / 2, bottom: rPos.bottom + 50 };
+  }).filter(Boolean);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -129,18 +146,18 @@ export default function BattleScreen() {
           <JungleBackdrop />
 
           {redBattlefield.map((s) => {
-            const lunge = activeRed.includes(s.idx) ? 14 : 0;
+            const lunge = activeRed.includes(s.idx) ? 32 : 0;
             return (
               <div
                 key={`r-${s.idx}`}
                 style={{
                   position: 'absolute', left: s.left, bottom: s.bottom,
-                  transition: 'left .6s ease, bottom .6s ease, transform .25s ease',
+                  transition: 'left .6s ease, bottom .6s ease, transform .2s ease',
                   transform: `translateX(${lunge}px) scale(${s.scale})`,
                   transformOrigin: 'bottom center', zIndex: s.z,
                 }}
               >
-                {highlightedIdx === s.idx && selectedIdx === null && !lineFighting && !roundResult && (
+                {highlightedIdx === s.idx && selectedIdx === null && !lineFighting && !roundResult && !roundStarted && (
                   <div
                     style={{
                       position: 'absolute', left: 32, top: -28, transform: 'translateX(-50%)',
@@ -158,7 +175,7 @@ export default function BattleScreen() {
                     selected={selectedIdx === s.idx}
                     highlighted={highlightedIdx === s.idx}
                     attacking={activeRed.includes(s.idx)}
-                    onClick={() => selectSoldier(s.idx)}
+                    onClick={roundStarted ? undefined : () => selectSoldier(s.idx)}
                   />
                 ) : (
                   <SimpleSoldier team="red" type={s.type} />
@@ -167,13 +184,13 @@ export default function BattleScreen() {
             );
           })}
           {blueBattlefield.map((s) => {
-            const lunge = activeBlue.includes(s.idx) ? -14 : 0;
+            const lunge = activeBlue.includes(s.idx) ? -32 : 0;
             return (
               <div
                 key={`b-${s.idx}`}
                 style={{
                   position: 'absolute', left: s.left, bottom: s.bottom,
-                  transition: 'left .6s ease, bottom .6s ease, transform .25s ease',
+                  transition: 'left .6s ease, bottom .6s ease, transform .2s ease',
                   transform: `translateX(${lunge}px) scale(${s.scale})${s.flip ? ' scaleX(-1)' : ''}`,
                   transformOrigin: 'bottom center', zIndex: s.z,
                 }}
@@ -186,6 +203,10 @@ export default function BattleScreen() {
               </div>
             );
           })}
+
+          {clashPoints.map((c) => (
+            <Clash key={c.id} left={c.left} bottom={c.bottom} />
+          ))}
 
           {effects.map((e) => (
             <Effect key={e.id} kind={e.kind} left={e.left} bottom={e.bottom} label={e.label} onDone={() => clearEffect(e.id)} />
@@ -204,7 +225,7 @@ export default function BattleScreen() {
           {canStartLine && !roundResult && (
             <div style={{ position: 'absolute', left: 18, top: 16, zIndex: 200, display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ padding: '6px 13px', background: INK, color: '#ffe44d', borderRadius: 7, fontFamily: "'Bangers', cursive", fontSize: 16, letterSpacing: '.05em' }}>
-                ❙❙ READY YOUR LINE
+                {roundStarted ? '❙❙ READY YOUR LINE' : '❙❙ PICK WEAPONS, THEN START ROUND'}
               </div>
               <button
                 type="button"

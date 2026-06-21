@@ -20,5 +20,5 @@ export function weaponPrice(weaponId) {
 }
 
 export const TOTAL_SOLDIERS = 42;
-export const BOUNTY_PER_ALIEN = 100;
+export const BOUNTY_PER_ALIEN = 40;
 export const EXTRA_SOLDIER_COST = 5000;
