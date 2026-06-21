@@ -33,7 +33,7 @@ function resolveDuel(red, blue) {
 function createInitialState() {
   return {
     screen: 'intro', // 'intro' | 'battle'
-    money: 2480,
+    money: 0,
     redRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', 0),
     blueRoster: buildTypedRoster(TOTAL_SOLDIERS, 'karate', BLUE_TYPE_OFFSET),
     selectedIdx: null,
@@ -78,7 +78,18 @@ function reducer(state, action) {
       const redRoster = state.redRoster.map((m, i) =>
         i === state.selectedIdx ? { ...m, weapon: action.weaponId } : m
       );
-      return { ...state, money, redRoster, selectedIdx: null };
+      let effects = state.effects;
+      let effectSeq = state.effectSeq;
+      if (!alreadyEquipped) {
+        const pos = buildBattlefield('red', redRoster).find((p) => p.idx === soldier.idx);
+        const weaponDef = WEAPONS.find((w) => w.id === action.weaponId);
+        effects = [
+          ...state.effects,
+          { id: `fx-${state.effectSeq}`, kind: 'equip', left: pos?.left ?? 80, bottom: (pos?.bottom ?? 80) + 100, label: `${weaponDef.icon} EQUIPPED!` },
+        ];
+        effectSeq = state.effectSeq + 1;
+      }
+      return { ...state, money, redRoster, selectedIdx: null, effects, effectSeq };
     }
 
     case 'HIGHLIGHT_MOVE': {

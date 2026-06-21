@@ -1,10 +1,13 @@
+import { WEAPONS } from '../data/types';
+
 const SKIN = '#f6cda0';
 const INK = '#1a1a1a';
 
-export default function ComicSoldier({ team, type, weapon, selected = false, highlighted = false, onClick }) {
+export default function ComicSoldier({ team, type, weapon, selected = false, highlighted = false, attacking = false, onClick }) {
   const isRed = team === 'red';
   const uniform = isRed ? '#e24a4a' : '#3a86e0';
   const uniformDark = isRed ? '#b23434' : '#2657aa';
+  const weaponIcon = WEAPONS.find((w) => w.id === weapon)?.icon;
 
   return (
     <div
@@ -16,9 +19,9 @@ export default function ComicSoldier({ team, type, weapon, selected = false, hig
         fontFamily: "'Nunito', sans-serif",
         cursor: onClick ? 'pointer' : 'default',
         filter: selected
-          ? 'drop-shadow(0 0 0 3px #ffe44d) drop-shadow(0 0 10px #ffe44d)'
+          ? 'drop-shadow(0 0 3px #ffe44d) drop-shadow(0 0 10px #ffe44d)'
           : highlighted
-            ? 'drop-shadow(0 0 0 3px #4ad6ff) drop-shadow(0 0 8px #4ad6ff)'
+            ? 'drop-shadow(0 0 3px #4ad6ff) drop-shadow(0 0 8px #4ad6ff)'
             : 'none',
       }}
     >
@@ -38,34 +41,51 @@ export default function ComicSoldier({ team, type, weapon, selected = false, hig
       <div style={{ position: 'absolute', left: 22, top: 49, width: 20, height: 23, borderRadius: '6px 6px 10px 10px', background: '#fff', border: `3px solid ${type.color}`, zIndex: 5, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, lineHeight: 1 }}>{type.icon}</div>
 
       {/* front arm */}
-      <div style={{ position: 'absolute', left: 44, top: 46, width: 10, height: 22, borderRadius: 6, background: uniform, border: `3px solid ${INK}`, zIndex: 6 }} />
+      <div style={{ position: 'absolute', left: 44, top: 46, width: 10, height: 22, borderRadius: 6, background: uniform, border: `3px solid ${INK}`, zIndex: 6, animation: attacking && weapon === 'karate' ? 'punch-fwd .45s ease' : 'none' }} />
       {/* hand */}
-      <div style={{ position: 'absolute', left: 45, top: 62, width: 13, height: 13, borderRadius: '50%', background: SKIN, border: `3px solid ${INK}`, zIndex: 9 }} />
+      <div style={{ position: 'absolute', left: 45, top: 62, width: 13, height: 13, borderRadius: '50%', background: SKIN, border: `3px solid ${INK}`, zIndex: 9, animation: attacking && weapon === 'karate' ? 'punch-fwd .45s ease' : 'none' }} />
 
       {/* WEAPONS */}
       {weapon === 'rifle' && (
         <>
-          <div style={{ position: 'absolute', left: 40, top: 56, width: 36, height: 9, borderRadius: 2, background: '#2f2f2f', border: `2px solid ${INK}`, transform: 'rotate(-7deg)', zIndex: 8 }} />
+          <div style={{ position: 'absolute', left: 40, top: 56, width: 36, height: 9, borderRadius: 2, background: '#2f2f2f', border: `2px solid ${INK}`, transform: 'rotate(-7deg)', zIndex: 8, animation: attacking ? 'rifle-recoil .45s ease' : 'none' }} />
           <div style={{ position: 'absolute', left: 44, top: 64, width: 7, height: 12, borderRadius: '0 0 3px 3px', background: '#5a3a22', border: `2px solid ${INK}`, zIndex: 7 }} />
+          {attacking && (
+            <div style={{ position: 'absolute', left: 72, top: 50, fontSize: 16, zIndex: 9, animation: 'muzzle-flash .45s ease' }}>✦</div>
+          )}
         </>
       )}
       {weapon === 'bow' && (
         <>
           <div style={{ position: 'absolute', left: 54, top: 44, width: 18, height: 44, border: '4px solid #7a4a26', borderRadius: '50%', borderRightColor: 'transparent', zIndex: 8 }} />
-          <div style={{ position: 'absolute', left: 57, top: 46, width: 2, height: 40, background: '#caa86a', zIndex: 8 }} />
+          <div style={{ position: 'absolute', left: 57, top: 46, width: 2, height: 40, background: '#caa86a', zIndex: 8, transformOrigin: 'left center', animation: attacking ? 'bow-draw .45s ease' : 'none' }} />
+          {attacking && (
+            <div style={{ position: 'absolute', left: 60, top: 64, width: 14, height: 3, background: '#5a3a22', zIndex: 9, animation: 'arrow-fly .45s ease' }} />
+          )}
         </>
       )}
       {weapon === 'javelin' && (
         <>
-          <div style={{ position: 'absolute', left: 34, top: 28, width: 5, height: 58, background: '#9c6b3f', border: '2px solid #5a3a1a', transform: 'rotate(-40deg)', transformOrigin: 'center', zIndex: 8 }} />
-          <div style={{ position: 'absolute', left: 62, top: 30, width: 0, height: 0, borderLeft: '6px solid transparent', borderRight: '6px solid transparent', borderBottom: '13px solid #c7c7c7', transform: 'rotate(50deg)', zIndex: 8 }} />
+          <div style={{ position: 'absolute', left: 34, top: 28, width: 5, height: 58, background: '#9c6b3f', border: '2px solid #5a3a1a', transform: 'rotate(-40deg)', transformOrigin: 'center', zIndex: 8, animation: attacking ? 'javelin-throw .45s ease' : 'none' }} />
+          <div style={{ position: 'absolute', left: 62, top: 30, width: 0, height: 0, borderLeft: '6px solid transparent', borderRight: '6px solid transparent', borderBottom: '13px solid #c7c7c7', transform: 'rotate(50deg)', zIndex: 8, animation: attacking ? 'javelin-throw .45s ease' : 'none' }} />
         </>
       )}
       {weapon === 'karate' && (
         <>
           <div style={{ position: 'absolute', left: 6, top: 40, width: 13, height: 13, borderRadius: '50%', background: SKIN, border: `3px solid ${INK}`, zIndex: 9 }} />
-          <div style={{ position: 'absolute', left: 50, top: 30, fontSize: 13, zIndex: 9, transform: 'rotate(12deg)' }}>✨</div>
+          <div style={{ position: 'absolute', left: 50, top: 30, fontSize: 13, zIndex: 9, transform: 'rotate(12deg)', animation: attacking ? 'punch-fwd .45s ease' : 'none' }}>✨</div>
         </>
+      )}
+
+      {/* weapon badge — always shown so it's clear what this soldier is assigned */}
+      {weaponIcon && (
+        <div style={{
+          position: 'absolute', right: -3, bottom: 4, width: 17, height: 17, borderRadius: '50%',
+          background: '#fff', border: `2px solid ${INK}`, display: 'flex', alignItems: 'center',
+          justifyContent: 'center', fontSize: 9, zIndex: 11,
+        }}>
+          {weaponIcon}
+        </div>
       )}
 
       {/* HEAD: red soldier */}

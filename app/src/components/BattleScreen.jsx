@@ -14,15 +14,18 @@ import { buildBattlefield } from '../lib/ranks';
 
 const INK = '#1a1a1a';
 
-function Effect({ kind, left, bottom, onDone }) {
+function Effect({ kind, left, bottom, label, onDone }) {
   useEffect(() => {
     const t = setTimeout(onDone, 900);
     return () => clearTimeout(t);
   }, [onDone]);
   const isPoof = kind === 'poof';
+  const isEquip = kind === 'equip';
+  const text = isPoof ? 'POOF!' : isEquip ? (label || 'EQUIPPED!') : 'OOF!';
+  const color = isEquip ? '#2a8f4a' : '#fff';
   return (
     <div style={{ position: 'absolute', left, bottom, transform: 'translateX(-50%)', zIndex: 220, textAlign: 'center', pointerEvents: 'none', animation: 'poof-pop .9s ease-out forwards' }}>
-      <div style={{ fontFamily: "'Bangers', cursive", fontSize: 26, color: '#fff', WebkitTextStroke: '2px #1a1a1a' }}>{isPoof ? 'POOF!' : 'OOF!'}</div>
+      <div style={{ fontFamily: "'Bangers', cursive", fontSize: isEquip ? 17 : 26, color, WebkitTextStroke: '2px #1a1a1a', whiteSpace: 'nowrap' }}>{text}</div>
       {isPoof && <div style={{ fontFamily: "'Bangers', cursive", fontSize: 18, color: '#ffe44d', WebkitTextStroke: '2px #1a1a1a' }}>+$100</div>}
     </div>
   );
@@ -85,6 +88,7 @@ export default function BattleScreen() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 36, background: '#1d2a1f', fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 18 }}>
       <div style={{ width: 1000, background: '#fff', borderRadius: 4, boxShadow: '0 18px 50px rgba(0,0,0,.45)', overflow: 'hidden', border: `5px solid ${INK}`, position: 'relative' }}>
 
         {/* HUD */}
@@ -136,6 +140,16 @@ export default function BattleScreen() {
                   transformOrigin: 'bottom center', zIndex: s.z,
                 }}
               >
+                {highlightedIdx === s.idx && selectedIdx === null && !lineFighting && !roundResult && (
+                  <div
+                    style={{
+                      position: 'absolute', left: 32, top: -28, transform: 'translateX(-50%)',
+                      fontSize: 24, zIndex: 50, pointerEvents: 'none', animation: 'bounce-cursor .6s ease-in-out infinite',
+                    }}
+                  >
+                    🔻
+                  </div>
+                )}
                 {s.detailed ? (
                   <ComicSoldier
                     team="red"
@@ -143,6 +157,7 @@ export default function BattleScreen() {
                     weapon={s.weapon}
                     selected={selectedIdx === s.idx}
                     highlighted={highlightedIdx === s.idx}
+                    attacking={activeRed.includes(s.idx)}
                     onClick={() => selectSoldier(s.idx)}
                   />
                 ) : (
@@ -164,7 +179,7 @@ export default function BattleScreen() {
                 }}
               >
                 {s.detailed ? (
-                  <ComicSoldier team="blue" type={s.type} weapon={s.weapon} />
+                  <ComicSoldier team="blue" type={s.type} weapon={s.weapon} attacking={activeBlue.includes(s.idx)} />
                 ) : (
                   <SimpleSoldier team="blue" type={s.type} />
                 )}
@@ -173,7 +188,7 @@ export default function BattleScreen() {
           })}
 
           {effects.map((e) => (
-            <Effect key={e.id} kind={e.kind} left={e.left} bottom={e.bottom} onDone={() => clearEffect(e.id)} />
+            <Effect key={e.id} kind={e.kind} left={e.left} bottom={e.bottom} label={e.label} onDone={() => clearEffect(e.id)} />
           ))}
 
           {selectedIdx !== null && (
@@ -227,7 +242,9 @@ export default function BattleScreen() {
         />
 
         <KeyboardLegend />
-        <TypeLegend />
+      </div>
+
+      <TypeLegend />
       </div>
 
       {toolboxOpen && (
