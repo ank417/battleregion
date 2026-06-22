@@ -2,15 +2,14 @@ import { useEffect } from 'react';
 import JungleBackdrop from './JungleBackdrop';
 import ComicSoldier from './ComicSoldier';
 import SimpleSoldier from './SimpleSoldier';
-import WeaponPicker from './WeaponPicker';
 import RosterBar from './RosterBar';
 import TypeLegend from './TypeLegend';
-import KeyboardLegend from './KeyboardLegend';
 import RoundBanner from './RoundBanner';
 import ToolboxModal from './ToolboxModal';
+import LoadoutPanel from './LoadoutPanel';
 import IntroScreen from './IntroScreen';
 import { useBattle } from '../hooks/useBattle';
-import { buildBattlefield } from '../lib/ranks';
+import { buildBattlefield, FRONT_LUNGE } from '../lib/ranks';
 import { BOUNTY_PER_ALIEN } from '../data/types';
 
 const INK = '#1a1a1a';
@@ -45,20 +44,16 @@ export default function BattleScreen() {
   const {
     screen, money, redRoster, blueRoster,
     redAlive, blueAlive, blueDefeated,
-    selectedIdx, highlightedIdx, effects,
-    roundNumber, roundResult, roundStarted, toolboxOpen, recruitPickerOpen,
-    lineFighting, canStartLine, activeRed, activeBlue,
+    selectedIdx, effects,
+    roundNumber, roundResult, toolboxOpen, recruitPickerOpen,
+    fighting, canBeginRound, activeRed, activeBlue,
     startGame, selectSoldier, closePicker, setWeapon, clearEffect,
     openRecruit, closeRecruit, recruitSoldier, startNextRound, retryRound,
-    openToolbox, closeToolbox, startLine, moveHighlight, enterSelect,
+    openToolbox, closeToolbox, beginRound,
   } = battle;
 
   const redBattlefield = buildBattlefield('red', redRoster);
   const blueBattlefield = buildBattlefield('blue', blueRoster);
-
-  const handlePick = (weaponId) => setWeapon(weaponId);
-
-  const selectedSoldier = selectedIdx !== null ? redRoster.find((m) => m.idx === selectedIdx) : null;
 
   const clashPoints = activeRed.map((rIdx, i) => {
     const bIdx = activeBlue[i];
@@ -77,27 +72,18 @@ export default function BattleScreen() {
         }
         return;
       }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        moveHighlight(-1);
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        moveHighlight(1);
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        enterSelect();
-      } else if (e.key === 'Escape') {
+      if (e.key === 'Escape') {
         e.preventDefault();
         if (selectedIdx !== null) closePicker();
         else if (toolboxOpen) closeToolbox();
       } else if (e.key === ' ') {
         e.preventDefault();
-        if (canStartLine) startLine();
+        if (canBeginRound) beginRound();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [screen, selectedIdx, toolboxOpen, canStartLine, startGame, moveHighlight, enterSelect, closePicker, closeToolbox, startLine]);
+  }, [screen, selectedIdx, toolboxOpen, canBeginRound, startGame, closePicker, closeToolbox, beginRound]);
 
   if (screen === 'intro') {
     return <IntroScreen onStart={startGame} />;
@@ -130,11 +116,11 @@ export default function BattleScreen() {
           <button
             type="button"
             onClick={openToolbox}
-            disabled={lineFighting}
+            disabled={fighting}
             style={{
               flex: 'none', padding: '8px 16px', background: INK, color: '#ffe44d', border: 'none', borderRadius: 9,
               fontFamily: "'Bangers', cursive", fontSize: 17, letterSpacing: '.04em', whiteSpace: 'nowrap',
-              cursor: lineFighting ? 'not-allowed' : 'pointer', opacity: lineFighting ? 0.5 : 1,
+              cursor: fighting ? 'not-allowed' : 'pointer', opacity: fighting ? 0.5 : 1,
             }}
           >
             🛠 TOOLBOX
@@ -146,7 +132,7 @@ export default function BattleScreen() {
           <JungleBackdrop />
 
           {redBattlefield.map((s) => {
-            const lunge = activeRed.includes(s.idx) ? 32 : 0;
+            const lunge = activeRed.includes(s.idx) ? FRONT_LUNGE : 0;
             return (
               <div
                 key={`r-${s.idx}`}
@@ -157,25 +143,12 @@ export default function BattleScreen() {
                   transformOrigin: 'bottom center', zIndex: s.z,
                 }}
               >
-                {highlightedIdx === s.idx && selectedIdx === null && !lineFighting && !roundResult && !roundStarted && (
-                  <div
-                    style={{
-                      position: 'absolute', left: 32, top: -28, transform: 'translateX(-50%)',
-                      fontSize: 24, zIndex: 50, pointerEvents: 'none', animation: 'bounce-cursor .6s ease-in-out infinite',
-                    }}
-                  >
-                    🔻
-                  </div>
-                )}
                 {s.detailed ? (
                   <ComicSoldier
                     team="red"
                     type={s.type}
                     weapon={s.weapon}
-                    selected={selectedIdx === s.idx}
-                    highlighted={highlightedIdx === s.idx}
                     attacking={activeRed.includes(s.idx)}
-                    onClick={roundStarted ? undefined : () => selectSoldier(s.idx)}
                   />
                 ) : (
                   <SimpleSoldier team="red" type={s.type} />
@@ -184,7 +157,7 @@ export default function BattleScreen() {
             );
           })}
           {blueBattlefield.map((s) => {
-            const lunge = activeBlue.includes(s.idx) ? -32 : 0;
+            const lunge = activeBlue.includes(s.idx) ? -FRONT_LUNGE : 0;
             return (
               <div
                 key={`b-${s.idx}`}
@@ -212,29 +185,17 @@ export default function BattleScreen() {
             <Effect key={e.id} kind={e.kind} left={e.left} bottom={e.bottom} label={e.label} onDone={() => clearEffect(e.id)} />
           ))}
 
-          {selectedIdx !== null && (
-            <>
-              <div onClick={closePicker} style={{ position: 'absolute', inset: 0, zIndex: 150 }} />
-              <div style={{ position: 'absolute', left: 18, top: 16, padding: '6px 13px', background: INK, color: '#ffe44d', borderRadius: 7, fontFamily: "'Bangers', cursive", fontSize: 16, letterSpacing: '.05em', zIndex: 200 }}>
-                ❙❙ PAUSED · PICK A WEAPON
-              </div>
-              <WeaponPicker currentWeapon={selectedSoldier?.weapon} money={money} onPick={handlePick} />
-            </>
-          )}
-
-          {canStartLine && !roundResult && (
-            <div style={{ position: 'absolute', left: 18, top: 16, zIndex: 200, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ padding: '6px 13px', background: INK, color: '#ffe44d', borderRadius: 7, fontFamily: "'Bangers', cursive", fontSize: 16, letterSpacing: '.05em' }}>
-                {roundStarted ? '❙❙ READY YOUR LINE' : '❙❙ PICK WEAPONS, THEN START ROUND'}
-              </div>
-              <button
-                type="button"
-                onClick={startLine}
-                style={{ padding: '7px 16px', background: '#2a8f4a', color: '#fff', border: `3px solid ${INK}`, borderRadius: 8, fontFamily: "'Bangers', cursive", fontSize: 15, letterSpacing: '.03em', cursor: 'pointer' }}
-              >
-                ⚔ START FIGHT (Space)
-              </button>
-            </div>
+          {!fighting && !roundResult && (
+            <LoadoutPanel
+              roster={redRoster}
+              money={money}
+              selectedIdx={selectedIdx}
+              onSelect={selectSoldier}
+              onSetWeapon={setWeapon}
+              onClosePicker={closePicker}
+              canBegin={canBeginRound}
+              onBegin={beginRound}
+            />
           )}
 
           {roundResult && (
@@ -253,7 +214,7 @@ export default function BattleScreen() {
           side="red"
           members={redRoster}
           label="YOUR ARMY"
-          sublabel={`${redAlive} ready · tap a soldier to send them to the front`}
+          sublabel={`${redAlive} ready · set loadouts between rounds`}
         />
         <RosterBar
           side="blue"
@@ -261,8 +222,6 @@ export default function BattleScreen() {
           label="ALIEN ARMY"
           sublabel={`${blueAlive} left · ${blueDefeated} defeated`}
         />
-
-        <KeyboardLegend />
       </div>
 
       <TypeLegend />

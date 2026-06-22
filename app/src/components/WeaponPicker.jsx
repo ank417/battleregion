@@ -1,9 +1,9 @@
 import { WEAPONS, weaponPrice } from '../data/types';
 
-export default function WeaponPicker({ currentWeapon, money, onPick }) {
+export default function WeaponPicker({ currentWeapon, money, onPick, style }) {
   const ordered = [...WEAPONS].reverse();
   return (
-    <div style={{ position: 'absolute', left: 272, top: 54, width: 222, background: '#fff', border: '4px solid #1a1a1a', borderRadius: 12, boxShadow: '6px 6px 0 #1a1a1a', padding: 13, zIndex: 200 }}>
+    <div style={{ position: 'absolute', left: 272, top: 54, width: 222, background: '#fff', border: '4px solid #1a1a1a', borderRadius: 12, boxShadow: '6px 6px 0 #1a1a1a', padding: 13, zIndex: 200, ...style }}>
       <div style={{ fontFamily: "'Bangers', cursive", fontSize: 19, color: '#1a1a1a', letterSpacing: '.03em', marginBottom: 10, whiteSpace: 'nowrap' }}>PICK A WEAPON!</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
         {ordered.map((w) => {

@@ -28,11 +28,6 @@ body {
   100% { opacity: 0; transform: translate(-50%, -44px) scale(0.95); }
 }
 
-@keyframes bounce-cursor {
-  0%, 100% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, -7px); }
-}
-
 @keyframes punch-fwd {
   0% { transform: translateX(0) rotate(0deg); }
   40% { transform: translateX(22px) rotate(-10deg); }
